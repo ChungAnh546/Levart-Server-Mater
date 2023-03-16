@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         state: DataTypes.BOOLEAN,
         postDate: DataTypes.DATE,
         imgUML: DataTypes.STRING,
+        creatorId: DataTypes.INTEGER,
 
 
     }, {

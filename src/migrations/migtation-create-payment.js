@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('RentalServices', {
+        await queryInterface.createTable('Payments', {
 
             id: {
                 allowNull: false,
@@ -9,26 +9,23 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            //   rentalType: DataTypes.STRING,
-            //   state: DataTypes.BOOLEAN,
-            //   note: DataTypes.TEXT,
-            //   address: DataTypes.STRING,
-            //   phonenumber: DataTypes.STRING,
-            //   contactInfo: DataTypes.STRING,
-            rentalType: {
+            customerId: {
+                type: Sequelize.INTEGER
+            },
+            amount: {
+                type: Sequelize.FLOAT
+            },
+            paymentMethod: {
                 type: Sequelize.STRING
             },
-            state: {
-                type: Sequelize.BOOLEAN
+            paymentDate: {
+                type: Sequelize.DATE
             },
-            address: {
+            status: {
                 type: Sequelize.STRING
             },
-            phoneNumber: {
-                type: Sequelize.STRING
-            },
-            contactInfo: {
-                type: Sequelize.STRING
+            note: {
+                type: Sequelize.TEXT
             },
 
 
@@ -44,6 +41,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('RentalServices');
+        await queryInterface.dropTable('Payments');
     }
 };

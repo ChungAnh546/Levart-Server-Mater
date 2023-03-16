@@ -20,10 +20,11 @@ module.exports = (sequelize, DataTypes) => {
         numPersonA: DataTypes.INTEGER,
         numPersonB: DataTypes.INTEGER,
         date: DataTypes.DATE,
-        payment: DataTypes.STRING,
-        state: DataTypes.BOOLEAN,
+        type: DataTypes.STRING,
+        paymentId: DataTypes.INTEGER,
+        state: DataTypes.STRING,
         note: DataTypes.TEXT,
-        
+
 
 
     }, {

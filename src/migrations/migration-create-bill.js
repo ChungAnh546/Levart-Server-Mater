@@ -9,10 +9,7 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            //   bookTourId: DataTypes.INTEGER,
-            //   customerId: DataTypes.INTEGER,
-            //   creatorId: DataTypes.INTEGER,
-            //   totalCost: DataTypes.FLOAT,
+
             bookTourId: {
                 type: Sequelize.INTEGER
             },
@@ -24,6 +21,15 @@ module.exports = {
             },
             totalCost: {
                 type: Sequelize.FLOAT
+            },
+            bookTourDate: {
+                type: Sequelize.DATE
+            },
+            promotionCode: {
+                type: Sequelize.STRING
+            },
+            status: {
+                type: Sequelize.STRING
             },
 
 

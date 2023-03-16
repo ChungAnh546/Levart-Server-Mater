@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         state: DataTypes.BOOLEAN,
         note: DataTypes.TEXT,
         address: DataTypes.STRING,
-        phonenumber: DataTypes.STRING,
+        phoneNumber: DataTypes.STRING,
         contactInfo: DataTypes.STRING,
 
 

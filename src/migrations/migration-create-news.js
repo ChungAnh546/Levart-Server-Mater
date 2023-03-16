@@ -33,7 +33,9 @@ module.exports = {
             imgUML: {
                 type: Sequelize.STRING
             },
-
+            creatorId: {
+                type: Sequelize.INTEGER
+            },
 
 
             createdAt: {

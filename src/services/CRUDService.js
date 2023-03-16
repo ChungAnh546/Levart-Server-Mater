@@ -12,7 +12,7 @@ let createNewUser = async (data) => {
                 password: hashPasswordFromBcrypt,
                 fullName: data.fullname,
                 address: data.address,
-                phonenumber: data.phonenumber,
+                phoneNumber: data.phoneNumber,
                 gender: data.gender === '1' ? true : false,
                 roleId: data.roleid,
 
