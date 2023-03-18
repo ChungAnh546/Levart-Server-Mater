@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         numPersonB: DataTypes.INTEGER,
         pricePersonA: DataTypes.FLOAT,
         pricePersonB: DataTypes.FLOAT,
-        type: DataTypes.STRING,
+        destinationId: DataTypes.INTEGER,
         unit: DataTypes.STRING,
 
 

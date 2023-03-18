@@ -11,6 +11,7 @@ import rentalServiceController from "../controllers/rentalServiceController.js";
 import tourController from "../controllers/tourController";
 import tourHotelController from "../controllers/tourHotelController";
 import allCodeController from "../controllers/allCodeController.js";
+import destinationController from "../controllers/destinationController.js";
 
 
 let router = express.Router();
@@ -71,6 +72,13 @@ let initWebRoutes = (app) => {
     //Api allCode
     router.post('/api/create-new-allCode', allCodeController.handleCreateAllCode);
     router.get('/api/get-all-allCode', allCodeController.handleGetAllCode);
+    //Api destination
+    router.post('/api/create-new-destination', destinationController.handleCreateDestination);
+    router.put('/api/edit-destination', destinationController.handleEditDestination);
+    router.get('/api/get-all-destination', destinationController.handleGetAllDestination);
+    router.delete('/api/delete-destination', destinationController.handleDeleteDestination);
+
+
     return app.use("/", router);
 }
 

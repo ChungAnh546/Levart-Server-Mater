@@ -59,13 +59,12 @@ module.exports = {
             pricePersonB: {
                 type: Sequelize.FLOAT
             },
-            type: {
-                type: Sequelize.STRING
+            destinationId: {
+                type: Sequelize.INTEGER
             },
             unit: {
                 type: Sequelize.STRING
             },
-
 
             createdAt: {
                 allowNull: false,
