@@ -1,6 +1,14 @@
 import newsService from '../services/newsService';
 
 let handleCreateNews = async (req, res) => {
+    let checkInput = checkValueInput(req.body);
+    if (!checkInput) {
+        return res.status(500).json({
+            errCode: 1,
+            errMessage: 'Missing input parameter!'
+        });
+    }
+
     let message = await newsService.createNews(req.body);
     console.log(message);
     return res.status(200).json(message);
@@ -32,6 +40,18 @@ let handleGetAllNews = async (req, res) => {
             news: news
         }
     )
+
+}
+let checkValueInput = (data) => {
+    let isValid = true;
+    let arrInput = ['title', 'contents']
+    for (let i = 0; i < arrInput.length; i++) {
+        if (!data[arrInput[i]]) {
+            isValid = false;
+            break;
+        }
+
+    } return isValid
 
 }
 let handleDeleteNews = async (req, res) => {

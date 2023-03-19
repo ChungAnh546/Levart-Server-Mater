@@ -5,8 +5,6 @@ let createNewDestination = (data) => {
             await db.Destination.create({
                 continent: data.continent,
                 country: data.country,
-                fullName: data.fullName,
-
                 region: data.region,
                 address: data.address,
 

@@ -1,9 +1,28 @@
 import paymentService from '../services/paymentService';
 
 let handleCreatePayment = async (req, res) => {
+    let checkInput = checkValueInput(req.body);
+    if (!checkInput) {
+        return res.status(500).json({
+            errCode: 1,
+            errMessage: 'Missing input parameter!'
+        });
+    }
     let message = await paymentService.createNewPayment(req.body);
     console.log(message);
     return res.status(200).json(message);
+}
+let checkValueInput = (data) => {
+    let isValid = true;
+    let arrInput = ['customerId', 'amount', 'paymentMethod']
+    for (let i = 0; i < arrInput.length; i++) {
+        if (!data[arrInput[i]]) {
+            isValid = false;
+            break;
+        }
+
+    } return isValid
+
 }
 let handleEditPayment = async (req, res) => {
     let data = req.body;
