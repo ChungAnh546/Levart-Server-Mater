@@ -234,10 +234,29 @@ let updateUserData = (data) => {
         }
     })
 }
+let verify = (email) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let check = checkUserEmail(email);
+            if (check) {
+                let user = await db.User.findOne({
+                    where: { email: email }, raw: false
+                });
+                user.verify = 'S3';
+                user.save();
+                resolve(true);
+            }
+
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 module.exports = {
     handleUserLogin: handleUserLogin,
     getAllUsers: getAllUsers,
     createNewUser: createNewUser,
     deleteUser: deleteUser,
     updateUserData: updateUserData,
+    verify: verify
 }

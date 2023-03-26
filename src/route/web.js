@@ -77,8 +77,8 @@ let initWebRoutes = (app) => {
     router.put('/api/edit-destination', destinationController.handleEditDestination);
     router.get('/api/get-all-destination', destinationController.handleGetAllDestination);
     router.delete('/api/delete-destination', destinationController.handleDeleteDestination);
-
-
+    //Api verify
+    router.get('/verify', userController.verify);
     return app.use("/", router);
 }
 

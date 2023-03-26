@@ -24,7 +24,7 @@
             <div class="col-12"></div>
             <p>create a new user</p>
         </div>
-        <form action="/post-crud" method="POST">
+        <form action="/api/create-new-user" method="POST">
             <div class="form-row">
                 <div class="form-group col-6">
                     <label for="inputEmail4">Email</label>
@@ -38,7 +38,7 @@
             <div class="form-row">
                 <div class="form-group col-6">
                     <label for="inputEmail4">Full Name</label>
-                    <input type="text" class="form-control" name="fullname" placeholder="First name">
+                    <input type="text" class="form-control" name="fullName" placeholder="First name">
                 </div>
 
             </div>
@@ -61,7 +61,7 @@
                 </div>
                 <div class="form-group col-3">
                     <label for="inputZip">Role</label>
-                    <select name="roleid" class="form-control">
+                    <select name="roleId" class="form-control">
                         <option value="1" selected>Admin</option>
                         <option value="0" selected>User</option>
 
