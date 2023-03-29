@@ -12,7 +12,7 @@ import tourController from "../controllers/tourController";
 import tourHotelController from "../controllers/tourHotelController";
 import allCodeController from "../controllers/allCodeController.js";
 import destinationController from "../controllers/destinationController.js";
-
+import otpController from "../controllers/otpController.js";
 
 let router = express.Router();
 
@@ -78,7 +78,12 @@ let initWebRoutes = (app) => {
     router.get('/api/get-all-destination', destinationController.handleGetAllDestination);
     router.delete('/api/delete-destination', destinationController.handleDeleteDestination);
     //Api verify
-    router.get('/verify', userController.verify);
+    router.get('/api/verify', userController.verify);
+    //Api Otp
+    router.post('/api/regisUserOtp', userController.regisUserOtp);
+    router.post('/api/create-new-Otp', otpController.handleCreateOtp);
+    router.post('/api/verifyOtp', userController.verifyOtp);
+
     return app.use("/", router);
 }
 

@@ -1,7 +1,8 @@
 
-import userService from '../services/userSerbice';
+import userService from '../services/userService';
 import mailer from '../utils/mailer';
 import bcrypt from "bcryptjs";
+
 const salt = bcrypt.genSaltSync(10);
 let handleLogin = async (req, res) => {
 
@@ -112,12 +113,41 @@ let verify = async (req, res) => {
     }
 
 }
+let regisUserOtp = async (req, res, next) => {
 
+    try {
+        let email = req.body.email;
+        let message = await userService.regisUser(email);
+        if (message.errCode === 0) {
+            return res.status(200).json(message);
+        } else {
+            return res.status(400).json(message);
+        }
+    } catch (error) {
+        console.error(error)
+        next(error)
+    }
+}
+let verifyOtp = async (req, res, next) => {
+    try {
+        let { email, otp } = req.body;
+        let message = await userService.verifyOtp(email, otp);
+        if (message.errCode === 0) {
+            return res.status(200).json(message);
+        } else {
+            return res.status(400).json(message);
+        }
+    } catch (error) {
+        next(error)
+    }
+}
 module.exports = {
     handleLogin: handleLogin,
     handleGetAllUsers: handleGetAllUsers,
     handleCreateNewUser: handleCreateNewUser,
     handleEditUser: handleEditUser,
     handleDeleteUser: handleDeleteUser,
-    verify: verify
+    verify: verify,
+    regisUserOtp: regisUserOtp,
+    verifyOtp: verifyOtp
 }

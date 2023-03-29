@@ -1,5 +1,7 @@
 import db from "../models/index";
 import bcrypt from "bcryptjs";
+import OtpGenerator from "otp-generator";
+import otpService from "./otpService"
 const salt = bcrypt.genSaltSync(10);
 
 let hashUserPassword = (password) => {
@@ -252,11 +254,82 @@ let verify = (email) => {
         }
     })
 }
+let regisUser = (email) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            let user = await db.User.findOne({
+                where: { email: email }
+            })
+            if (user) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'This email is already in user!'
+                })
+            }
+            let OTP = OtpGenerator.generate(6,
+                {
+                    digits: true,
+                    lowerCaseAlphabets: false,
+                    upperCaseAlphabets: false,
+                    specialChars: false,
+                }
+            )
+            await otpService.insertOtp(email, OTP);
+            resolve({
+                errCode: 0,
+                errMessage: '',
+                element: OTP
+            })
+
+
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+let verifyOtp = (email, otp) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let otpHolder = await db.Otp.findOne({
+                where: { email: email }
+            })
+            if (!otpHolder) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Expired OTP!'
+                })
+            }
+            let isValid = await otpService.validOtp(otp, otpHolder.otp);
+            if (!isValid) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Invalid OTP!'
+                })
+
+            }
+            if (isValid && email === otpHolder.email) {
+                //create user
+                //delete otp
+                resolve({
+                    errCode: 0,
+                    errMessage: 'ok',
+                    element: {}
+                })
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+
+}
 module.exports = {
     handleUserLogin: handleUserLogin,
     getAllUsers: getAllUsers,
     createNewUser: createNewUser,
     deleteUser: deleteUser,
     updateUserData: updateUserData,
-    verify: verify
+    verify: verify,
+    regisUser: regisUser,
+    verifyOtp: verifyOtp
 }
