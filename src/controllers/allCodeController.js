@@ -3,11 +3,9 @@ let handleCreateAllCode = async (req, res) => {
 
     let message = await allCodeService.createNewAllCode(req.body);
     console.log(message);
-    if (message.errCode === 0) {
-        return res.status(200).json(message);
-    } else {
-        return res.status(400).json(message);
-    }
+
+    return res.status(message.code).json(message);
+
 
 
 
@@ -18,6 +16,7 @@ let handleGetAllCode = async (req, res) => {
     if (!type) {
         return res.status(400).json(
             {
+                code: 400,
                 errCode: 1,
                 errMessage: 'Missing required parameters',
 
@@ -26,11 +25,11 @@ let handleGetAllCode = async (req, res) => {
     }
     let allCodes = await allCodeService.getAllCode(type);
 
-    return res.status(200).json(
+    return res.status(allCodes.code).json(
         {
             errCode: 0,
             errMessage: 'Ok',
-            allCodes: allCodes
+            allCodes: allCodes.allCodes
         }
     )
 }

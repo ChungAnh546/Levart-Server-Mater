@@ -14,6 +14,7 @@ let createNewPayment = (data) => {
 
             })
             resolve({
+                code: 200,
                 errCode: 0,
                 errMessage: '',
                 message: 'OK',
@@ -30,6 +31,7 @@ let updatePaymentData = (data) => {
         try {
             if (!data.id) {
                 resolve({
+                    code: 400,
                     errCode: 1,
                     Message: 'Missing required parameters!'
                 })
@@ -45,6 +47,7 @@ let updatePaymentData = (data) => {
                 //
                 await payment.save();
                 resolve({
+                    code: 200,
                     errCode: 0,
                     Message: 'Update the payment succeeds!'
                 })
@@ -52,6 +55,7 @@ let updatePaymentData = (data) => {
 
             } else {
                 resolve({
+                    code: 404,
                     errCode: 2,
                     Message: `payment's not found!`
                 })
@@ -76,7 +80,12 @@ let getAllPayment = (paymentId) => {
                     where: { id: paymentId }
                 })
             }
-            resolve(payment)
+            resolve({
+                code: 200,
+                errCode: 0,
+                Message: '',
+                payment: payment
+            })
         } catch (error) {
             reject(error)
         }

@@ -1,6 +1,7 @@
 import db from "../models/index";
 import bcrypt from "bcryptjs";
 import OtpGenerator from "otp-generator";
+import mailer from '../utils/mailer';
 import otpService from "./otpService"
 const salt = bcrypt.genSaltSync(10);
 
@@ -9,7 +10,11 @@ let hashUserPassword = (password) => {
         try {
 
             let hashPassword = await bcrypt.hashSync(password, salt);
-            resolve(hashPassword);
+            resolve({
+                code: 200,
+                errCode: 0,
+                hashPassword: hashPassword
+            });
         } catch (error) {
             reject(error)
         }
@@ -37,6 +42,7 @@ let handleUserLogin = (email, password) => {
                     if (check) {
 
                         userData = {
+                            code: 201,
                             errCode: 0,
                             errMessage: `Ok`,
                             user: user
@@ -44,6 +50,7 @@ let handleUserLogin = (email, password) => {
 
                     } else {
                         userData = {
+                            code: 400,
                             errCode: 3,
                             errMessage: `Wrong password`,
                             user: user
@@ -52,6 +59,7 @@ let handleUserLogin = (email, password) => {
 
                 } else {
                     userData = {
+                        code: 404,
                         errCode: 2,
                         errMessage: `User's not found`
 
@@ -62,6 +70,7 @@ let handleUserLogin = (email, password) => {
             }
             else {
                 userData = {
+                    code: 400,
                     errCode: 1,
                     errMessage: `Your's email isn't exist is your system, Plz try other email! `
 
@@ -131,7 +140,11 @@ let getAllUsers = (userId) => {
                     }
                 })
             }
-            resolve(users)
+            resolve({
+                code: 200,
+                errCode: 0,
+                users: users
+            })
         } catch (error) {
             reject(error)
         }
@@ -142,6 +155,7 @@ let createNewUser = (data) => {
         try {
             if (!data.email) {
                 resolve({
+                    code: 400,
                     errCode: 1,
                     errMessage: 'Missing required parameters',
                 })
@@ -150,6 +164,7 @@ let createNewUser = (data) => {
             let check = await checkUserEmail(data.email)
             if (check === true) {
                 resolve({
+                    code: 400,
                     errCode: 2,
                     errMessage: 'Your email is already in used, Plz try another email ',
 
@@ -169,6 +184,7 @@ let createNewUser = (data) => {
 
                 })
                 resolve({
+                    code: 201,
                     errCode: 0,
                     errMessage: '',
                     message: 'OK',
@@ -188,6 +204,7 @@ let deleteUser = (userId) => {
         })
         if (!user) {
             resolve({
+                code: 404,
                 errCode: 2,
                 errMessage: `The user isn't exist`
             })
@@ -197,6 +214,7 @@ let deleteUser = (userId) => {
             where: { id: userId }
         })
         resolve({
+            code: 200,
             errCode: 0,
             message: `The user is deleted`
         })
@@ -208,6 +226,7 @@ let updateUserData = (data) => {
         try {
             if (!data.id) {
                 resolve({
+                    code: 400,
                     errCode: 1,
                     Message: 'Missing required parameters!'
                 })
@@ -220,6 +239,7 @@ let updateUserData = (data) => {
                 user.address = data.address;
                 await user.save();
                 resolve({
+                    code: 200,
                     errCode: 0,
                     Message: 'Update the user succeeds!'
                 })
@@ -227,6 +247,7 @@ let updateUserData = (data) => {
 
             } else {
                 resolve({
+                    code: 404,
                     errCode: 2,
                     Message: `User's not found!`
                 })
@@ -263,6 +284,7 @@ let regisUser = (email) => {
             })
             if (user) {
                 resolve({
+                    code: 400,
                     errCode: 1,
                     errMessage: 'This email is already in user!'
                 })
@@ -276,10 +298,22 @@ let regisUser = (email) => {
                 }
             )
             await otpService.insertOtp(email, OTP);
+            mailer.sendMail(email, "LEVART-Travel to your favorite city with respectful of the environment",
+                `<div style="text-align: center;">
+                <div style="display: inline-block; text-align: center; padding: 20px; border: 1px solid #ccc; border-radius: 10px; margin: 0 auto;">
+                  <div >Bạn đang đăng kí tài khoản LEVART WORLD bằng email này.</div>
+                  <div >Mã xác nhận của bạn là:</div>
+                  <h2 >${OTP}</h2>
+                  <h4 >Mã xác nhận này sẽ hết hạn trong 2 phút.</h4>
+                  <div >Nếu bạn không tạo yêu cầu này vui lòng liên hệ với chúng tôi để được hỗ trợ kiểm tra.</div>
+                </div>
+              </div>`)
+
             resolve({
+                code: 200,
                 errCode: 0,
-                errMessage: '',
-                element: OTP
+                errMessage: ''
+
             })
 
 
@@ -296,6 +330,7 @@ let verifyOtp = (email, otp) => {
             })
             if (!otpHolder) {
                 resolve({
+                    code: 400,
                     errCode: 1,
                     errMessage: 'Expired OTP!'
                 })
@@ -303,7 +338,8 @@ let verifyOtp = (email, otp) => {
             let isValid = await otpService.validOtp(otp, otpHolder.otp);
             if (!isValid) {
                 resolve({
-                    errCode: 1,
+                    code: 400,
+                    errCode: 2,
                     errMessage: 'Invalid OTP!'
                 })
 
@@ -312,6 +348,7 @@ let verifyOtp = (email, otp) => {
                 //create user
                 //delete otp
                 resolve({
+                    code: 200,
                     errCode: 0,
                     errMessage: 'ok',
                     element: {}

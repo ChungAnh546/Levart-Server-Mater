@@ -5,16 +5,15 @@ let handleCreateSurcharger = async (req, res) => {
     let checkInput = checkValueInput(req.body);
     if (!checkInput) {
         return res.status(400).json({
+            code: 400,
             errCode: 1,
             errMessage: 'Missing input parameter!'
         });
     }
     let message = await surchargerService.createNewSurcharger(req.body);
-    if (message.errCode === 0) {
-        return res.status(200).json(message);
-    } else {
-        return res.status(400).json(message);
-    }
+
+    return res.status(message.code).json(message);
+
 
 
 }

@@ -4,26 +4,23 @@ let handleCreateNews = async (req, res) => {
     let checkInput = checkValueInput(req.body);
     if (!checkInput) {
         return res.status(400).json({
+            code: 400,
             errCode: 1,
             errMessage: 'Missing input parameter!'
         });
     }
 
     let message = await newsService.createNews(req.body);
-    if (message.errCode === 0) {
-        return res.status(200).json(message);
-    } else {
-        return res.status(400).json(message);
-    }
+
+    return res.status(message.code).json(message);
+
 }
 let handleEditNews = async (req, res) => {
     let data = req.body;
     let message = await newsService.updateNewsData(data);
-    if (message.errCode === 0) {
-        return res.status(200).json(message);
-    } else {
-        return res.status(400).json(message);
-    }
+
+    return res.status(message.code).json(message);
+
 }
 let handleGetAllNews = async (req, res) => {
     let id = req.query.id;//all,id
@@ -31,20 +28,21 @@ let handleGetAllNews = async (req, res) => {
     if (!id) {
         return res.status(400).json(
             {
+                code: 400,
                 errCode: 1,
                 errMessage: 'Missing required parameters',
-                news: news
+
             }
         )
     }
 
     let news = await newsService.getAllNews(id);
 
-    return res.status(200).json(
+    return res.status(news.code).json(
         {
             errCode: 0,
             errMessage: 'Ok',
-            news: news
+            news: news.news
         }
     )
 
@@ -64,17 +62,16 @@ let checkValueInput = (data) => {
 let handleDeleteNews = async (req, res) => {
     if (!req.body.id) {
         return res.status(400).json({
+            code: 400,
             errCode: 1,
             errMessage: 'Missing required parameters'
 
         })
     }
     let message = await newsService.deleteNews(req.body.id);
-    if (message.errCode === 0) {
-        return res.status(200).json(message);
-    } else {
-        return res.status(400).json(message);
-    }
+
+    return res.status(message.code).json(message);
+
 }
 
 module.exports = {

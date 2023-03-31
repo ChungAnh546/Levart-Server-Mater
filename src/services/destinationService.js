@@ -11,6 +11,7 @@ let createNewDestination = (data) => {
 
             })
             resolve({
+                code: 201,
                 errCode: 0,
                 errMessage: '',
                 message: 'OK',
@@ -28,6 +29,7 @@ let updateDestinationData = (data) => {
         try {
             if (!data.id) {
                 resolve({
+                    code: 400,
                     errCode: 1,
                     Message: 'Missing required parameters!'
                 })
@@ -44,6 +46,7 @@ let updateDestinationData = (data) => {
                 //
                 await destination.save();
                 resolve({
+                    code: 202,
                     errCode: 0,
                     Message: 'Update the destination succeeds!'
                 })
@@ -51,6 +54,7 @@ let updateDestinationData = (data) => {
 
             } else {
                 resolve({
+                    code: 404,
                     errCode: 2,
                     Message: `destination's not found!`
                 })
@@ -75,7 +79,12 @@ let getAllDestination = (destinationId) => {
                     where: { id: destinationId }
                 })
             }
-            resolve(destination)
+            resolve({
+                code: 200,
+                errCode: 0,
+                Message: '',
+                destination: destination
+            })
         } catch (error) {
             reject(error)
         }
@@ -88,6 +97,7 @@ let deleteDestination = (destinationId) => {
         })
         if (!destination) {
             resolve({
+                code: 404,
                 errCode: 2,
                 errMessage: `The destination isn't exist`
             })
@@ -97,6 +107,7 @@ let deleteDestination = (destinationId) => {
             where: { id: destinationId }
         })
         resolve({
+            code: 200,
             errCode: 0,
             message: `The destination is deleted`
         })

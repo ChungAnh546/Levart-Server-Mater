@@ -5,17 +5,16 @@ let handleCreateNewBill = async (req, res) => {
     let checkInput = checkValueInput(req.body);
     if (!checkInput) {
         return res.status(400).json({
+            code: 400,
             errCode: 1,
             errMessage: 'Missing input parameter!'
         });
     }
 
     let message = await billService.createNewBill(req.body);
-    if (message.errCode === 0) {
-        return res.status(200).json(message);
-    } else {
-        return res.status(400).json(message);
-    }
+
+    return res.status(message.code).json(message);
+
 
 
 }
@@ -36,6 +35,7 @@ let handleGetAllBill = async (req, res) => {
     if (!id) {
         return res.status(400).json(
             {
+                code: 200,
                 errCode: 1,
                 errMessage: 'Missing required parameters',
 
@@ -43,10 +43,10 @@ let handleGetAllBill = async (req, res) => {
         )
     }
     let bill = await billService.getBill(id);
-    return res.status(200).json({
+    return res.status(bill.code).json({
         errCode: 0,
         errMessage: 'Ok',
-        bill: bill
+        bill: bill.bill
     })
 
 }

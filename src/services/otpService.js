@@ -12,6 +12,7 @@ let insertOtp = (email, otp) => {
                 otp: hashOtp
             });
             resolve({
+                code: 201,
                 errCode: 0,
                 errMessage: '',
                 message: 'OK',
@@ -29,7 +30,14 @@ let validOtp = (otp, hashOtp) => {
         try {
 
             let isValid = await bcrypt.compareSync(otp, hashOtp);
-            resolve(isValid)
+            resolve({
+                code: 200,
+                errCode: 0,
+                errMessage: '',
+                message: 'OK',
+                isValid: isValid
+
+            })
         } catch (error) {
             reject(error)
         }

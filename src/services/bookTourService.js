@@ -16,6 +16,7 @@ let createNewBookTour = (data) => {
                 note: data.note,
             })
             resolve({
+                code: 201,
                 errCode: 0,
                 errMessage: '',
                 message: 'OK',
@@ -30,6 +31,7 @@ let updateBookTourData = (data) => {
         try {
             if (!data.id) {
                 resolve({
+                    code: 400,
                     errCode: 1,
                     Message: 'Missing required parameters!'
                 })
@@ -43,6 +45,7 @@ let updateBookTourData = (data) => {
                 bookTour.note = data.note;
                 await bookTour.save();
                 resolve({
+                    code: 202,
                     errCode: 0,
                     Message: 'Update the bookTour succeeds!'
                 })
@@ -50,6 +53,7 @@ let updateBookTourData = (data) => {
 
             } else {
                 resolve({
+                    code: 404,
                     errCode: 2,
                     Message: `bookTour's not found!`
                 })
@@ -72,7 +76,12 @@ let getBookTour = (bookTourId) => {
                     where: { id: bookTourId }
                 })
             }
-            resolve(bookTour)
+            resolve({
+                code: 200,
+                errCode: 0,
+                Message: '',
+                bookTour: bookTour
+            })
         } catch (error) {
             reject(error)
         }
@@ -85,6 +94,7 @@ let deleteBookTour = (bookTourId) => {
         })
         if (!bookTour) {
             resolve({
+                code: 404,
                 errCode: 2,
                 errMessage: `The bookTour isn't exist`
             })
@@ -94,6 +104,7 @@ let deleteBookTour = (bookTourId) => {
             where: { id: bookTourId }
         })
         resolve({
+            code: 200,
             errCode: 0,
             message: `The bookTour is deleted`
         })

@@ -17,6 +17,7 @@ let createNews = (data) => {
 
             })
             resolve({
+                code: 201,
                 errCode: 0,
                 errMessage: '',
                 message: 'OK',
@@ -34,6 +35,7 @@ let updateNewsData = (data) => {
         try {
             if (!data.id) {
                 resolve({
+                    code: 400,
                     errCode: 1,
                     Message: 'Missing required parameters!'
                 })
@@ -50,6 +52,7 @@ let updateNewsData = (data) => {
                 news.creatorId = data.creatorId;
                 await news.save();
                 resolve({
+                    code: 200,
                     errCode: 0,
                     Message: 'Update the news succeeds!'
                 })
@@ -57,6 +60,7 @@ let updateNewsData = (data) => {
 
             } else {
                 resolve({
+                    code: 404,
                     errCode: 2,
                     Message: `news's not found!`
                 })
@@ -81,7 +85,12 @@ let getAllNews = (newsId) => {
                     where: { id: newsId }
                 })
             }
-            resolve(News)
+            resolve({
+                code: 200,
+                errCode: 0,
+                Message: '',
+                News: News
+            })
         } catch (error) {
             reject(error)
         }
@@ -94,6 +103,7 @@ let deleteNews = (newsId) => {
         })
         if (!news) {
             resolve({
+                code: 404,
                 errCode: 2,
                 errMessage: `The news isn't exist`
             })
@@ -103,6 +113,7 @@ let deleteNews = (newsId) => {
             where: { id: newsId }
         })
         resolve({
+            code: 200,
             errCode: 0,
             message: `The news is deleted`
         })

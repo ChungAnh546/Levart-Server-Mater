@@ -17,6 +17,7 @@ let createNewHotel = (data) => {
 
             })
             resolve({
+                code: 201,
                 errCode: 0,
                 errMessage: '',
                 message: 'OK',
@@ -34,6 +35,7 @@ let updateHotelData = (data) => {
         try {
             if (!data.id) {
                 resolve({
+                    code: 400,
                     errCode: 1,
                     Message: 'Missing required parameters!'
                 })
@@ -50,6 +52,7 @@ let updateHotelData = (data) => {
                 hotel.note = data.note;
                 await hotel.save();
                 resolve({
+                    code: 202,
                     errCode: 0,
                     Message: 'Update the hotel succeeds!'
                 })
@@ -57,6 +60,7 @@ let updateHotelData = (data) => {
 
             } else {
                 resolve({
+                    code: 204,
                     errCode: 2,
                     Message: `hotel's not found!`
                 })
@@ -82,7 +86,12 @@ let getAllHotel = (hotelId) => {
 
                 })
             }
-            resolve(hotel)
+            resolve({
+                code: 200,
+                errCode: 0,
+                Message: '',
+                hotel: hotel
+            })
         } catch (error) {
             reject(error)
         }
@@ -95,6 +104,7 @@ let deleteHotel = (hotelId) => {
         })
         if (!hotel) {
             resolve({
+                code: 404,
                 errCode: 2,
                 errMessage: `The hotel isn't exist`
             })
@@ -104,6 +114,7 @@ let deleteHotel = (hotelId) => {
             where: { id: hotelId }
         })
         resolve({
+            code: 200,
             errCode: 0,
             message: `The hotel is deleted`
         })

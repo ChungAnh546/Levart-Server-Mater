@@ -10,6 +10,7 @@ let createNewTourHotel = (data) => {
 
             })
             resolve({
+                code: 201,
                 errCode: 0,
                 errMessage: '',
                 message: 'OK',
@@ -27,6 +28,7 @@ let updateTourHotelData = (data) => {
         try {
             if (!data.id) {
                 resolve({
+                    code: 400,
                     errCode: 1,
                     Message: 'Missing required parameters!'
                 })
@@ -39,6 +41,7 @@ let updateTourHotelData = (data) => {
                 tourHotel.tourId = data.tourId;
                 await tourHotel.save();
                 resolve({
+                    code: 202,
                     errCode: 0,
                     Message: 'Update the tourHotel succeeds!'
                 })
@@ -46,6 +49,7 @@ let updateTourHotelData = (data) => {
 
             } else {
                 resolve({
+                    code: 404,
                     errCode: 2,
                     Message: `tourHotel's not found!`
                 })
@@ -62,6 +66,7 @@ let deleteTourHotel = (tourHotelId) => {
         })
         if (!tourHotel) {
             resolve({
+                code: 404,
                 errCode: 2,
                 errMessage: `The tourHotel isn't exist`
             })
@@ -71,6 +76,7 @@ let deleteTourHotel = (tourHotelId) => {
             where: { id: tourHotelId }
         })
         resolve({
+            code: 200,
             errCode: 0,
             message: `The tourHotel is deleted`
         })

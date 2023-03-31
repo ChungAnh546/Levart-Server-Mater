@@ -13,6 +13,7 @@ let createNewSurcharger = (data) => {
 
             })
             resolve({
+                code: 201,
                 errCode: 0,
                 errMessage: '',
                 message: 'OK',

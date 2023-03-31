@@ -5,17 +5,16 @@ let handleCreateHotel = async (req, res) => {
     let checkInput = checkValueInput(req.body);
     if (!checkInput) {
         return res.status(400).json({
+            code: 400,
             errCode: 1,
             errMessage: 'Missing input parameter!'
         });
     }
 
     let message = await hotelService.createNewHotel(req.body);
-    if (message.errCode === 0) {
-        return res.status(200).json(message);
-    } else {
-        return res.status(400).json(message);
-    }
+
+    return res.status(message.code).json(message);
+
 
 
 }
@@ -34,11 +33,9 @@ let checkValueInput = (data) => {
 let handleEditHotel = async (req, res) => {
     let data = req.body;
     let message = await hotelService.updateHotelData(data);
-    if (message.errCode === 0) {
-        return res.status(200).json(message);
-    } else {
-        return res.status(400).json(message);
-    }
+
+    return res.status(message.code).json(message);
+
 
 }
 let handleGetAllHotel = async (req, res) => {
@@ -47,6 +44,7 @@ let handleGetAllHotel = async (req, res) => {
     if (!id) {
         return res.status(400).json(
             {
+                code: 400,
                 errCode: 1,
                 errMessage: 'Missing required parameters',
 
@@ -56,11 +54,11 @@ let handleGetAllHotel = async (req, res) => {
 
     let hotel = await hotelService.getAllHotel(id);
 
-    return res.status(200).json(
+    return res.status(hotel.code).json(
         {
             errCode: 0,
             errMessage: 'Ok',
-            hotel: hotel
+            hotel: hotel.hotel
         }
     )
 
@@ -68,17 +66,16 @@ let handleGetAllHotel = async (req, res) => {
 let handleDeleteHotel = async (req, res) => {
     if (!req.body.id) {
         return res.status(400).json({
+            code: 400,
             errCode: 1,
             errMessage: 'Missing required parameters'
 
         })
     }
     let message = await hotelService.deleteHotel(req.body.id);
-    if (message.errCode === 0) {
-        return res.status(200).json(message);
-    } else {
-        return res.status(400).json(message);
-    }
+
+    return res.status(message.code).json(message);
+
 }
 module.exports = {
     handleCreateHotel: handleCreateHotel,

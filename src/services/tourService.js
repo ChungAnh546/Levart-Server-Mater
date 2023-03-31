@@ -22,6 +22,7 @@ let createNewTour = (data) => {
 
             })
             resolve({
+                code: 201,
                 errCode: 0,
                 errMessage: '',
                 message: 'OK',
@@ -40,6 +41,7 @@ let updateTourData = (data) => {
         try {
             if (!data.id) {
                 resolve({
+                    code: 400,
                     errCode: 1,
                     Message: 'Missing required parameters!'
                 })
@@ -66,6 +68,7 @@ let updateTourData = (data) => {
                 //
                 await tour.save();
                 resolve({
+                    code: 202,
                     errCode: 0,
                     Message: 'Update the tour succeeds!'
                 })
@@ -73,6 +76,7 @@ let updateTourData = (data) => {
 
             } else {
                 resolve({
+                    code: 404,
                     errCode: 2,
                     Message: `tour's not found!`
                 })
@@ -97,7 +101,12 @@ let getAllTour = (tourId) => {
                     where: { id: tourId }
                 })
             }
-            resolve(tour)
+            resolve({
+                code: 200,
+                errCode: 0,
+                Message: '',
+                tour: tour
+            })
         } catch (error) {
             reject(error)
         }
@@ -110,6 +119,7 @@ let deleteTour = (tourId) => {
         })
         if (!tour) {
             resolve({
+                code: 404,
                 errCode: 2,
                 errMessage: `The tour isn't exist`
             })
@@ -120,6 +130,7 @@ let deleteTour = (tourId) => {
 
         })
         resolve({
+            code: 200,
             errCode: 0,
             message: `The tour is deleted`
         })

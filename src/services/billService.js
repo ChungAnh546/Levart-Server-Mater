@@ -13,6 +13,7 @@ let createNewBill = (data) => {
                 status: data.status,
             })
             resolve({
+                code: 201,
                 errCode: 0,
                 errMessage: '',
                 message: 'OK',
@@ -37,7 +38,13 @@ let getBill = (billId) => {
                     where: { id: billId }
                 })
             }
-            resolve(bill)
+            resolve({
+                code: 200,
+                errCode: 0,
+                errMessage: '',
+                message: 'OK',
+                bill: bill
+            })
 
         } catch (error) {
             reject(error)

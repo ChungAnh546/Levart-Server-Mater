@@ -11,6 +11,7 @@ let createNewAllCode = (data) => {
 
             })
             resolve({
+                code: 201,
                 errCode: 0,
                 errMessage: '',
                 message: 'OK',
@@ -41,7 +42,14 @@ let getAllCode = (type) => {
 
                 })
             }
-            resolve(allCodes)
+            resolve({
+                code: 200,
+                errCode: 0,
+                errMessage: '',
+                message: 'OK',
+                allCodes: allCodes
+
+            })
         } catch (error) {
             reject(error)
         }

@@ -8,11 +8,9 @@ let handleCreateTour = async (req, res) => {
         });
     }
     let message = await tourService.createNewTour(req.body);
-    if (message.errCode === 0) {
-        return res.status(200).json(message);
-    } else {
-        return res.status(400).json(message);
-    }
+
+    return res.status(message.code).json(message);
+
 
 
 }
@@ -31,11 +29,9 @@ let checkValueInput = (data) => {
 let handleEditTour = async (req, res) => {
     let data = req.body;
     let message = await tourService.updateTourData(data);
-    if (message.errCode === 0) {
-        return res.status(200).json(message);
-    } else {
-        return res.status(400).json(message);
-    }
+
+    return res.status(message.code).json(message);
+
 }
 let handleGetAllTour = async (req, res) => {
     let id = req.query.id;//all,id
@@ -43,6 +39,7 @@ let handleGetAllTour = async (req, res) => {
     if (!id) {
         return res.status(400).json(
             {
+                code: 400,
                 errCode: 1,
                 errMessage: 'Missing required parameters',
 
@@ -52,11 +49,11 @@ let handleGetAllTour = async (req, res) => {
 
     let tour = await tourService.getAllTour(id);
 
-    return res.status(200).json(
+    return res.status(tour.code).json(
         {
             errCode: 0,
             errMessage: 'Ok',
-            tour: tour
+            tour: tour.tour
         }
     )
 
@@ -64,17 +61,16 @@ let handleGetAllTour = async (req, res) => {
 let handleDeleteTour = async (req, res) => {
     if (!req.body.id) {
         return res.status(400).json({
+            code: 400,
             errCode: 1,
             errMessage: 'Missing required parameters'
 
         })
     }
     let message = await tourService.deleteTour(req.body.id);
-    if (message.errCode === 0) {
-        return res.status(200).json(message);
-    } else {
-        return res.status(400).json(message);
-    }
+
+    return res.status(message.code).json(message);
+
 }
 module.exports = {
     handleCreateTour: handleCreateTour,
