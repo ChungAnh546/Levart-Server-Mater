@@ -153,6 +153,7 @@ let getAllUsers = (userId) => {
 let createNewUser = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
+
             if (!data.email) {
                 resolve({
                     code: 400,
@@ -174,7 +175,7 @@ let createNewUser = (data) => {
                 let hashPasswordFromBcrypt = await hashUserPassword(data.password);
                 await db.User.create({
                     email: data.email,
-                    password: hashPasswordFromBcrypt,
+                    password: hashPasswordFromBcrypt.hashPassword,
                     fullName: data.fullName,
 
                     address: data.address,
@@ -284,37 +285,40 @@ let regisUser = (email) => {
             })
             if (user) {
                 resolve({
-                    code: 400,
+                    ///400
+                    code: 409,
                     errCode: 1,
                     errMessage: 'This email is already in user!'
                 })
+            } else {
+                let OTP = OtpGenerator.generate(6,
+                    {
+                        digits: true,
+                        lowerCaseAlphabets: false,
+                        upperCaseAlphabets: false,
+                        specialChars: false,
+                    }
+                )
+                await otpService.insertOtp(email, OTP);
+                mailer.sendMail(email, "LEVART-Travel to your favorite city with respectful of the environment",
+                    `<div style="text-align: center;">
+                    <div style="display: inline-block; text-align: center; padding: 20px; border: 1px solid #ccc; border-radius: 10px; margin: 0 auto;">
+                      <div >Bạn đang đăng kí tài khoản LEVART WORLD bằng email này.</div>
+                      <div >Mã xác nhận của bạn là:</div>
+                      <h2 >${OTP}</h2>
+                      <h4 >Mã xác nhận này sẽ hết hạn trong 2 phút.</h4>
+                      <div >Nếu bạn không tạo yêu cầu này vui lòng liên hệ với chúng tôi để được hỗ trợ kiểm tra.</div>
+                    </div>
+                  </div>`)
+
+                resolve({
+                    code: 200,
+                    errCode: 0,
+                    errMessage: ''
+
+                })
             }
-            let OTP = OtpGenerator.generate(6,
-                {
-                    digits: true,
-                    lowerCaseAlphabets: false,
-                    upperCaseAlphabets: false,
-                    specialChars: false,
-                }
-            )
-            await otpService.insertOtp(email, OTP);
-            mailer.sendMail(email, "LEVART-Travel to your favorite city with respectful of the environment",
-                `<div style="text-align: center;">
-                <div style="display: inline-block; text-align: center; padding: 20px; border: 1px solid #ccc; border-radius: 10px; margin: 0 auto;">
-                  <div >Bạn đang đăng kí tài khoản LEVART WORLD bằng email này.</div>
-                  <div >Mã xác nhận của bạn là:</div>
-                  <h2 >${OTP}</h2>
-                  <h4 >Mã xác nhận này sẽ hết hạn trong 2 phút.</h4>
-                  <div >Nếu bạn không tạo yêu cầu này vui lòng liên hệ với chúng tôi để được hỗ trợ kiểm tra.</div>
-                </div>
-              </div>`)
 
-            resolve({
-                code: 200,
-                errCode: 0,
-                errMessage: ''
-
-            })
 
 
         } catch (error) {
@@ -325,8 +329,11 @@ let regisUser = (email) => {
 let verifyOtp = (email, otp) => {
     return new Promise(async (resolve, reject) => {
         try {
+
+
             let otpHolder = await db.Otp.findOne({
-                where: { email: email }
+                where: { email: email },
+                raw: false
             })
             if (!otpHolder) {
                 resolve({
@@ -336,7 +343,8 @@ let verifyOtp = (email, otp) => {
                 })
             }
             let isValid = await otpService.validOtp(otp, otpHolder.otp);
-            if (!isValid) {
+
+            if (!isValid.isValid) {
                 resolve({
                     code: 400,
                     errCode: 2,
@@ -344,14 +352,15 @@ let verifyOtp = (email, otp) => {
                 })
 
             }
-            if (isValid && email === otpHolder.email) {
+            if (isValid.isValid && (email === otpHolder.email)) {
                 //create user
                 //delete otp
+                otpHolder.destroy();
                 resolve({
                     code: 200,
                     errCode: 0,
                     errMessage: 'ok',
-                    element: {}
+
                 })
             }
         } catch (error) {

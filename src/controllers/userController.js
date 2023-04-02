@@ -58,11 +58,6 @@ let handleGetAllUsers = async (req, res) => {
 let handleCreateNewUser = async (req, res) => {
 
     let message = await userService.createNewUser(req.body);
-
-    let hashFromBcrypt = await hash(req.body.email);
-
-    mailer.sendMail(req.body.email, "Verify Email", `<b>Bạn đang đăng kí tài khoản Levart World bằng email này:</b><br><b>Xác nhận với chúng tôi</b><a href="${process.env.APP_URL}/verify?email=${req.body.email}&token=${hashFromBcrypt}"> Verify </a>`)
-
     return res.status(message.code).json(message);
 
 
