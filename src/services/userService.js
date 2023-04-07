@@ -343,7 +343,6 @@ let verifyOtp = (email, otp) => {
                 })
             }
             let isValid = await otpService.validOtp(otp, otpHolder.otp);
-
             if (!isValid.isValid) {
                 resolve({
                     code: 400,

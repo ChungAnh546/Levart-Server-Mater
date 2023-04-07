@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
+            Hotel.belongsTo(models.TourHotel, { foreignKey: 'hotelId', targetKey: 'id', as: 'hotelData' });
         }
     };
     Hotel.init({

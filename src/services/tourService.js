@@ -94,11 +94,24 @@ let getAllTour = (tourId) => {
 
             let tour = '';
             if (tourId === 'ALL') {
-                tour = await db.Tour.findAll();
+                tour = await db.Tour.findAll(
+                    {
+                        include: [
+                            { model: db.Destination }
+                        ],
+                        raw: true,
+                        nest: true
+                    }
+                );
             }
             if (tourId && tourId !== 'ALL') {
                 tour = await db.Tour.findOne({
-                    where: { id: tourId }
+                    where: { id: tourId },
+                    include: [
+                        { model: db.Destination }
+                    ],
+                    raw: true,
+                    nest: true
                 })
             }
             resolve({
