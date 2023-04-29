@@ -12,9 +12,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.belongsTo(models.AllCode, { foreignKey: 'gender', targetKey: 'key', as: 'genderData' })
-      User.belongsTo(models.BookTour, { foreignKey: 'creatorId', targetKey: 'id', as: 'creatorBookTourData' });
-      User.hasMany(models.Bill, { foreignKey: 'creatorId', as: 'billCreatorData' });
-      User.hasMany(models.News, { foreignKey: 'creatorId', as: 'creatorNewsData' });
+      //   User.belongsTo(models.BookTour, { foreignKey: 'creatorId', targetKey: 'id', as: 'creatorBookTourData' });
+      //   User.hasMany(models.Bill, { foreignKey: 'creatorId', as: 'billCreatorData' });
+      //   User.hasMany(models.News, { foreignKey: 'creatorId', as: 'creatorNewsData' });
+      // 
     }
   };
   User.init({

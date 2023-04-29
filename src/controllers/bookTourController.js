@@ -1,5 +1,5 @@
 import bookTourService from '../services/bookTourService';
-
+const { addDelayEventOrder, evenListenerBookTourExprination, configRedisDelayOrder } = require('../config/config.redis');
 let handleCreateBookTour = async (req, res) => {
     let checkInput = checkValueInput(req.body);
     if (!checkInput) {
@@ -57,6 +57,26 @@ let handleGetAllBookTour = async (req, res) => {
     })
 
 }
+let delayBookTour = async (id) => {
+    await addDelayEventOrder(id, 15);
+}
+let handleBookTour = async (req, res) => {
+    let checkInput = checkValueInput(req.body);
+    const time = new Date().getTime();
+
+    if (!checkInput) {
+        return res.status(400).json({
+            code: 400,
+            errCode: 1,
+            errMessage: 'Missing input parameter!',
+            time: time
+        });
+    }
+
+    let message = await bookTourService.bookTour(req.body);
+
+    return res.status(message.code).json(message);
+}
 let handleDeleteBookTour = async (req, res) => {
     if (!req.body.id) {
         return res.status(400).json({
@@ -76,6 +96,7 @@ module.exports = {
     handleCreateBookTour: handleCreateBookTour,
     handleEditBookTour: handleEditBookTour,
     handleGetAllBookTour: handleGetAllBookTour,
-    handleDeleteBookTour: handleDeleteBookTour
+    handleDeleteBookTour: handleDeleteBookTour,
+    handleBookTour: handleBookTour,
 
 }

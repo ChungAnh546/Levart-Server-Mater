@@ -40,6 +40,8 @@ let initWebRoutes = (app) => {
     router.put('/api/edit-bookTour', bookTourController.handleEditBookTour);
     router.get('/api/get-all-bookTour', bookTourController.handleGetAllBookTour);
     router.delete('/api/delete-bookTour', bookTourController.handleDeleteBookTour);
+    router.post('/api/bookTour/book', bookTourController.handleBookTour);
+    
     //Api hotel 
     router.post('/api/create-new-hotel', hotelController.handleCreateHotel);
     router.put('/api/edit-hotel', hotelController.handleEditHotel);

@@ -342,7 +342,21 @@ let verifyOtp = (email, otp) => {
                     errMessage: 'Expired OTP!'
                 })
             }
-            let isValid = await otpService.validOtp(otp, otpHolder.otp);
+            let getAllOtp = await db.Otp.findAll({
+                where: {
+                    email: email
+
+                }, raw: true
+            });
+            let isValid = {};
+            for (let index = 0; index < getAllOtp.length; index++) {
+                const element = getAllOtp[index].otp;
+                isValid = await otpService.validOtp(otp, element);
+                if (isValid.isValid) { break; }
+                console.log(isValid.isValid);
+
+            }
+            console.log(getAllOtp);
             if (!isValid.isValid) {
                 resolve({
                     code: 400,
@@ -354,7 +368,10 @@ let verifyOtp = (email, otp) => {
             if (isValid.isValid && (email === otpHolder.email)) {
                 //create user
                 //delete otp
-                otpHolder.destroy();
+                await db.Otp.destroy({
+                    where: { email: email }
+                })
+                //getAllOtp.destroy();
                 resolve({
                     code: 200,
                     errCode: 0,

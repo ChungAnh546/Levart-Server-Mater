@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
             // define association here
             BookTour.belongsTo(models.Bill, { foreignKey: 'bookTourId', targetKey: 'id', as: 'billBookTourData' });
             BookTour.belongsTo(models.Tour, { foreignKey: 'tourId', targetKey: 'id', as: 'bookTourData' });
-            BookTour.hasMany(models.User, { foreignKey: 'creatorId', as: 'creatorBookTourData' })
+            // BookTour.hasMany(models.User, { foreignKey: 'creatorId', as: 'creatorBookTourData' })
             BookTour.hasOne(models.Payment, { foreignKey: 'paymentId', as: 'paymentBookTourData' });
         }
     };
