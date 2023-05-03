@@ -38,7 +38,8 @@ let handleGetAllDestination = async (req, res) => {
         {
             errCode: 0,
             errMessage: 'Ok',
-            destination: destination.destination
+            destination: destination.destination,
+
         }
     )
 

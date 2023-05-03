@@ -1,4 +1,5 @@
 import db from "../models/index";
+import destinationService from "./destinationService";
 let createNewTour = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -16,7 +17,7 @@ let createNewTour = (data) => {
                 numPersonB: data.numPersonB,
                 pricePersonA: data.pricePersonA,
                 pricePersonB: data.pricePersonB,
-                type: data.type,
+                destinationId: data.destinationId,
                 unit: data.unit,
 
 
@@ -97,7 +98,7 @@ let getAllTour = (tourId) => {
                 tour = await db.Tour.findAll(
                     {
                         include: [
-                            { model: db.Destination }
+                            { model: db.Destination, as: 'destinationData' }
                         ],
                         raw: true,
                         nest: true
@@ -108,11 +109,145 @@ let getAllTour = (tourId) => {
                 tour = await db.Tour.findOne({
                     where: { id: tourId },
                     include: [
-                        { model: db.Destination }
+                        { model: db.Destination, as: 'destinationData' }
                     ],
                     raw: true,
                     nest: true
                 })
+            }
+            // console.log("continent", await getTourByContinent("Chau A"));
+            // console.log("country", await getTourByCountry("Viet Nam"));
+            // console.log("region", await getTourByRegion("Mien Nam"));
+            // console.log("address", await getTourByAddress("Ca Mau"));
+
+            resolve({
+                code: 200,
+                errCode: 0,
+                Message: '',
+                tour: tour
+            })
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+let getTourByContinent = (Continent) => {
+
+    return new Promise(async (resolve, reject) => {
+
+        try {
+
+            let tour = '';
+
+            if (Continent) {
+                let IdTour = await destinationService.getDestinationByContinent(Continent);
+                if (IdTour.destination) {
+                    tour = await db.Tour.findOne({
+                        where: { destinationId: IdTour.destination.id },
+                        include: [
+                            { model: db.Destination, as: 'destinationData' }
+                        ],
+                        raw: true,
+                        nest: true
+                    })
+                }
+
+            }
+            resolve({
+                code: 200,
+                errCode: 0,
+                Message: '',
+                tour: tour
+            })
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+let getTourByCountry = (Country) => {
+
+    return new Promise(async (resolve, reject) => {
+
+        try {
+
+            let tour = '';
+
+            if (Country) {
+                let IdTour = await destinationService.getDestinationByCountry(Country);
+                if (IdTour.destination) {
+                    tour = await db.Tour.findOne({
+                        where: { destinationId: IdTour.destination.id },
+                        include: [
+                            { model: db.Destination, as: 'destinationData' }
+                        ],
+                        raw: true,
+                        nest: true
+                    })
+                }
+            }
+            resolve({
+                code: 200,
+                errCode: 0,
+                Message: '',
+                tour: tour
+            })
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+let getTourByRegion = (Region) => {
+
+    return new Promise(async (resolve, reject) => {
+
+        try {
+
+            let tour = '';
+
+            if (Region) {
+                let IdTour = await destinationService.getDestinationByRegion(Region);
+                if (IdTour.destination) {
+                    tour = await db.Tour.findOne({
+                        where: { destinationId: IdTour.destination.id },
+                        include: [
+                            { model: db.Destination, as: 'destinationData' }
+                        ],
+                        raw: true,
+                        nest: true
+                    })
+                }
+            }
+            resolve({
+                code: 200,
+                errCode: 0,
+                Message: '',
+                tour: tour
+            })
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+let getTourByAddress = (Address) => {
+
+    return new Promise(async (resolve, reject) => {
+
+        try {
+
+            let tour = '';
+
+            if (Address) {
+                let IdTour = await destinationService.getDestinationByAddress(Address);
+                if (IdTour.destination) {
+                    tour = await db.Tour.findOne({
+                        where: { destinationId: IdTour.destination.id },
+                        include: [
+                            { model: db.Destination, as: 'destinationData' }
+                        ],
+                        raw: true,
+                        nest: true
+                    })
+                }
             }
             resolve({
                 code: 200,
@@ -154,5 +289,10 @@ module.exports = {
     createNewTour: createNewTour,
     updateTourData: updateTourData,
     getAllTour: getAllTour,
-    deleteTour: deleteTour
+    deleteTour: deleteTour,
+    getTourByContinent: getTourByContinent,
+    getTourByCountry: getTourByCountry,
+    getTourByAddress: getTourByAddress,
+    getTourByRegion: getTourByRegion
+
 }

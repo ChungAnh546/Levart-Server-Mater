@@ -13,10 +13,10 @@ let handleCreateTour = async (req, res) => {
 
 
 
-}
+}//, 'dateGo', 'dateBack'
 let checkValueInput = (data) => {
     let isValid = true;
-    let arrInput = ['placeDest', 'placeGo', 'dateGo', 'dateBack', 'numPersonA', 'numPersonB', 'pricePersonA', 'pricePersonB', 'destinationId']
+    let arrInput = ['placeDest', 'placeGo', 'numPersonA', 'numPersonB', 'pricePersonA', 'pricePersonB', 'destinationId']
     for (let i = 0; i < arrInput.length; i++) {
         if (!data[arrInput[i]]) {
             isValid = false;

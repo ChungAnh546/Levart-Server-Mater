@@ -79,6 +79,110 @@ let getAllDestination = (destinationId) => {
                     where: { id: destinationId }
                 })
             }
+            // let continent = await getDestinationByContinent("Chau a");
+            // let country = await getDestinationByCountry("Viet Nam");
+            // let region = await getDestinationByRegion("Mien Nam");
+            // let address = await getDestinationByAddress("Ca Mau");
+            resolve({
+                code: 200,
+                errCode: 0,
+                Message: '',
+                destination: destination
+                // continent: continent,
+                // country: country,
+                // region: region,
+                // address: address
+            })
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+let getDestinationByContinent = (destinationContinent) => {
+
+    return new Promise(async (resolve, reject) => {
+
+        try {
+
+            let destination = '';
+
+            if (destinationContinent) {
+                destination = await db.Destination.findOne({
+                    where: { continent: destinationContinent }
+                })
+            }
+            resolve({
+                code: 200,
+                errCode: 0,
+                Message: '',
+                destination: destination
+            })
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+let getDestinationByCountry = (destinationCountry) => {
+
+    return new Promise(async (resolve, reject) => {
+
+        try {
+
+            let destination = '';
+
+            if (destinationCountry) {
+                destination = await db.Destination.findOne({
+                    where: { country: destinationCountry }
+                })
+            }
+            resolve({
+                code: 200,
+                errCode: 0,
+                Message: '',
+                destination: destination
+            })
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+let getDestinationByAddress = (destinationAddress) => {
+
+    return new Promise(async (resolve, reject) => {
+
+        try {
+
+            let destination = '';
+
+            if (destinationAddress) {
+                destination = await db.Destination.findOne({
+                    where: { address: destinationAddress }
+                })
+            }
+            resolve({
+                code: 200,
+                errCode: 0,
+                Message: '',
+                destination: destination
+            })
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+let getDestinationByRegion = (destinationRegion) => {
+
+    return new Promise(async (resolve, reject) => {
+
+        try {
+
+            let destination = '';
+
+            if (destinationRegion) {
+                destination = await db.Destination.findOne({
+                    where: { region: destinationRegion }
+                })
+            }
             resolve({
                 code: 200,
                 errCode: 0,
@@ -114,9 +218,38 @@ let deleteDestination = (destinationId) => {
 
     })
 }
+let deleteDestinationByAddress = (destinationAddress) => {
+    return new Promise(async (resolve, reject) => {
+        let destination = await db.Destination.findOne({
+            where: { address: destinationAddress }
+        })
+        if (!destination) {
+            resolve({
+                code: 404,
+                errCode: 2,
+                errMessage: `The destination isn't exist`
+            })
+
+        }
+        await db.Destination.destroy({
+            where: { address: destinationAddress }
+        })
+        resolve({
+            code: 200,
+            errCode: 0,
+            message: `The destination is deleted`
+        })
+
+    })
+}
 module.exports = {
     createNewDestination: createNewDestination,
     updateDestinationData: updateDestinationData,
     getAllDestination: getAllDestination,
-    deleteDestination: deleteDestination
+    deleteDestination: deleteDestination,
+    getDestinationByContinent: getDestinationByContinent,
+    getDestinationByCountry: getDestinationByCountry,
+    getDestinationByAddress: getDestinationByAddress,
+    getDestinationByRegion: getDestinationByRegion,
+    deleteDestinationByAddress: deleteDestinationByAddress
 }
