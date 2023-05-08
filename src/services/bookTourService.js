@@ -1,5 +1,6 @@
 import db from "../models/index";
 import tourService from "../services/tourService";
+import userService from "../services/userService";
 const { set, get, setnx, incrby, exists } = require('../config/config.redis');
 let checkReservation = (tour, bookTour) => {
     let numberAdult = tour.numPersonA;
@@ -203,10 +204,63 @@ let deleteBookTour = (bookTourId) => {
 
     })
 }
+let bookTourBasic = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let Tour = await tourService.getAllTour(data.tourId);
+            let Customer = await userService.getAllUsers(data.customerId);
+
+            if (Tour.tour && Customer.users) {
+                let numRemaining = 0;
+                //kiểm tra có tồn tại tour custormer và creator ko 
+                if (Tour.tour.numPersonB < data.numPersonB) {
+                    Tour.tour.numPersonB = Tour.tour.numPersonB - data.numPersonB;
+                } else {
+                    numRemaining = data.numPersonB - Tour.tour.numPersonB;
+                }
+
+                if (Tour.tour.numPersonA < (data.numPersonA + numRemaining)) {
+                    resolve({
+                        code: 400,
+                        errCode: 1,
+                        Message: 'hết chỗ!'
+                    });
+                } else {
+                    //tao book tour 
+                    // update lai number a cua tour
+                    await createNewBookTour(data);
+                    Tour.tour.numPersonA = Tour.tour.numPersonA - (data.numPersonA + numRemaining);
+                    await tourService.updateTourData(Tour.tour);
+                    // tao bill
+                    resolve({
+                        code: 201,
+                        errCode: 0,
+                        errMessage: '',
+                        message: 'OK',
+
+                    })
+
+                }
+
+            } else {
+                resolve({
+                    code: 400,
+                    errCode: 1,
+                    Message: 'Error parameters!'
+                });
+            }
+        } catch (error) {
+            reject(error);
+        }
+
+    })
+
+}
 module.exports = {
     createNewBookTour: createNewBookTour,
     updateBookTourData: updateBookTourData,
     getBookTour: getBookTour,
     deleteBookTour: deleteBookTour,
-    bookTour: bookTour
+    bookTour: bookTour,
+    bookTourBasic: bookTourBasic
 }

@@ -59,12 +59,39 @@ let handleDeleteDestination = async (req, res) => {
 
 
 }
+let handleGetRegionDestination = async (req, res) => {
+    let region = req.query.region;//all,region
+
+    if (!region) {
+        return res.status(400).json(
+            {
+                code: 400,
+                errCode: 1,
+                errMessage: 'Missing required parameters',
+
+            }
+        )
+    }
+
+    let destination = await destinationService.getDestinationByRegion(region);
+
+    return res.status(destination.code).json(
+        {
+            errCode: 0,
+            errMessage: 'Ok',
+            destination: destination.destination,
+
+        }
+    )
+
+}
 
 module.exports = {
 
     handleCreateDestination: handleCreateDestination,
     handleEditDestination: handleEditDestination,
     handleGetAllDestination: handleGetAllDestination,
-    handleDeleteDestination: handleDeleteDestination
+    handleDeleteDestination: handleDeleteDestination,
+    handleGetRegionDestination: handleGetRegionDestination
 
 }

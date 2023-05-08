@@ -207,7 +207,7 @@ let getTourByRegion = (Region) => {
             if (Region) {
                 let IdTour = await destinationService.getDestinationByRegion(Region);
                 if (IdTour.destination) {
-                    tour = await db.Tour.findOne({
+                    tour = await db.Tour.findAll({
                         where: { destinationId: IdTour.destination.id },
                         include: [
                             { model: db.Destination, as: 'destinationData' }

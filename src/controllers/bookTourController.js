@@ -73,7 +73,7 @@ let handleBookTour = async (req, res) => {
         });
     }
 
-    let message = await bookTourService.bookTour(req.body);
+    let message = await bookTourService.bookTourBasic(req.body);
 
     return res.status(message.code).json(message);
 }

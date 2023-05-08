@@ -46,6 +46,7 @@ module.exports = {
             },
             imgUML: {
                 type: Sequelize.STRING
+                //Sequelize.BLOB('long')
             },
             numPersonA: {
                 type: Sequelize.INTEGER

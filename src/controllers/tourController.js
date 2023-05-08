@@ -72,9 +72,34 @@ let handleDeleteTour = async (req, res) => {
     return res.status(message.code).json(message);
 
 }
+let handelGetTourByRegion = async (req, res) => {
+    let region = req.query.region;//all,id
+
+    if (!region) {
+        return res.status(400).json(
+            {
+                code: 400,
+                errCode: 1,
+                errMessage: 'Missing required parameters',
+
+            }
+        )
+    }
+
+    let tour = await tourService.getTourByRegion(region);
+
+    return res.status(tour.code).json(
+        {
+            errCode: 0,
+            errMessage: 'Ok',
+            tour: tour.tour
+        }
+    )
+}
 module.exports = {
     handleCreateTour: handleCreateTour,
     handleEditTour: handleEditTour,
     handleGetAllTour: handleGetAllTour,
-    handleDeleteTour: handleDeleteTour
+    handleDeleteTour: handleDeleteTour,
+    handelGetTourByRegion: handelGetTourByRegion
 }

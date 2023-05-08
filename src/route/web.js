@@ -13,7 +13,7 @@ import tourHotelController from "../controllers/tourHotelController";
 import allCodeController from "../controllers/allCodeController.js";
 import destinationController from "../controllers/destinationController.js";
 import otpController from "../controllers/otpController.js";
-
+import { verifyToken } from "../middleware/auth";
 let router = express.Router();
 
 let initWebRoutes = (app) => {
@@ -25,8 +25,9 @@ let initWebRoutes = (app) => {
     router.get('/edit-crud', homeController.getEditCRUD);
     router.post('/put-crud', homeController.putCRUD);
     router.get('/delete-crud', homeController.deleteCRUD);
+    // api user
     router.post('/api/login', userController.handleLogin);
-    router.get('/api/get-all-users', userController.handleGetAllUsers);
+    router.get('/api/get-all-users', verifyToken, userController.handleGetAllUsers);
     router.post('/api/create-new-user', userController.handleCreateNewUser);
     router.put('/api/edit-user', userController.handleEditUser);
     router.delete('/api/delete-user', userController.handleDeleteUser);
@@ -65,7 +66,7 @@ let initWebRoutes = (app) => {
     router.put('/api/edit-tour', tourController.handleEditTour);
     router.get('/api/get-all-tour', tourController.handleGetAllTour);
     router.delete('/api/delete-tour', tourController.handleDeleteTour);
-    //router.get('/api/search/tour')
+    router.get('/api/get-tour-region', tourController.handelGetTourByRegion);
     //Api tourHotel
     router.post('/api/create-new-tourHotel', tourHotelController.handleCreateTourHotel);
     router.put('/api/edit-tourHotel', tourHotelController.handleEditTourHotel);
@@ -80,6 +81,7 @@ let initWebRoutes = (app) => {
     router.put('/api/edit-destination', destinationController.handleEditDestination);
     router.get('/api/get-all-destination', destinationController.handleGetAllDestination);
     router.delete('/api/delete-destination', destinationController.handleDeleteDestination);
+    router.get('/api/get-region-destination', destinationController.handleGetRegionDestination);
     //Api verify
     router.get('/api/verify', userController.verify);
     //Api Otp
