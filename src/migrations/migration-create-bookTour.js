@@ -23,10 +23,13 @@ module.exports = {
             customerId: {
                 type: Sequelize.INTEGER
             },
-            numPersonA: {
+            adultSlot: {
                 type: Sequelize.INTEGER
             },
-            numPersonB: {
+            childrenSlot: {
+                type: Sequelize.INTEGER
+            },
+            babySlot: {
                 type: Sequelize.INTEGER
             },
             date: {

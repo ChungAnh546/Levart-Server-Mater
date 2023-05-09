@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
             //Tour.hasMany(models.Surcharger,{})
             /// Tour.hasMany(models.BookTour, { foreignKey: 'tourId', as: 'bookTourData' });
             // define association here
+            Tour.hasMany(models.TourDetails, { foreignKey: 'tourId', as: 'tourDetailData' });
         }
     };
     Tour.init({
@@ -26,13 +27,16 @@ module.exports = (sequelize, DataTypes) => {
         dateBack: DataTypes.DATE,
         state: DataTypes.BOOLEAN,
         note: DataTypes.TEXT,
-        imgUML: DataTypes.STRING,
-        numPersonA: DataTypes.INTEGER,
-        numPersonB: DataTypes.INTEGER,
-        pricePersonA: DataTypes.FLOAT,
-        pricePersonB: DataTypes.FLOAT,
+        image: DataTypes.BLOB('long'),
+        adultSlot: DataTypes.INTEGER,
+        childrenSlot: DataTypes.INTEGER,
+        adultPrice: DataTypes.FLOAT,
+        childPrice: DataTypes.FLOAT,
+        babySlot: DataTypes.INTEGER,
+        babyPrice: DataTypes.FLOAT,
         destinationId: DataTypes.INTEGER,
         unit: DataTypes.STRING,
+        dayDetail: DataTypes.INTEGER,
 
 
     }, {

@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('Hotels', {
+        await queryInterface.createTable('tourDetails', {
 
             id: {
                 allowNull: false,
@@ -10,30 +10,16 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
-            hotelName: {
+            title: {
                 type: Sequelize.STRING
             },
-            address: {
+            schedule: {
                 type: Sequelize.STRING
             },
-            phoneNumber: {
-                type: Sequelize.STRING
+            tourId: {
+                type: Sequelize.INTEGER
             },
-            website: {
-                type: Sequelize.STRING
-            },
-            starRating: {
-                type: Sequelize.STRING
-            },
-            note: {
-                type: Sequelize.TEXT
-            },
-            service: {
-                type: Sequelize.STRING
-            },
-            image: {
-                type: Sequelize.BLOB('long')
-            },
+
 
 
 
@@ -48,6 +34,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('Hotels');
+        await queryInterface.dropTable('tourDetails');
     }
 };

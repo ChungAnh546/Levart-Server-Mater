@@ -44,20 +44,26 @@ module.exports = {
             note: {
                 type: Sequelize.TEXT
             },
-            imgUML: {
-                type: Sequelize.STRING
+            image: {
+                type: Sequelize.BLOB('long')
                 //Sequelize.BLOB('long')
             },
-            numPersonA: {
+            adultSlot: {
                 type: Sequelize.INTEGER
             },
-            numPersonB: {
+            childrenSlot: {
                 type: Sequelize.INTEGER
             },
-            pricePersonA: {
+            adultPrice: {
                 type: Sequelize.FLOAT
             },
-            pricePersonB: {
+            childPrice: {
+                type: Sequelize.FLOAT
+            },
+            babySlot: {
+                type: Sequelize.INTEGER
+            },
+            babyPrice: {
                 type: Sequelize.FLOAT
             },
             destinationId: {
@@ -65,6 +71,11 @@ module.exports = {
             },
             unit: {
                 type: Sequelize.STRING
+            },
+            dayDetail: {
+
+                type: Sequelize.ARRAY(Sequelize.JSON)
+
             },
 
             createdAt: {

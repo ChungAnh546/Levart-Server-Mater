@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         contents: DataTypes.TEXT,
         state: DataTypes.BOOLEAN,
         postDate: DataTypes.DATE,
-        imgUML: DataTypes.STRING,
+        imgUML: DataTypes.BLOB('long'),
         creatorId: DataTypes.INTEGER,
 
 

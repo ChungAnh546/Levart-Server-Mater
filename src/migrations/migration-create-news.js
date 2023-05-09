@@ -31,7 +31,7 @@ module.exports = {
                 type: Sequelize.DATE
             },
             imgUML: {
-                type: Sequelize.STRING
+                type: Sequelize.BLOB('long')
                 //Sequelize.BLOB('long')
             },
             creatorId: {
