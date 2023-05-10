@@ -70,6 +70,7 @@ let initWebRoutes = (app) => {
     router.get('/api/get-all-tour', tourController.handleGetAllTour);
     router.delete('/api/delete-tour', tourController.handleDeleteTour);
     router.get('/api/get-tour-region', tourController.handelGetTourByRegion);
+    router.get('/api/get-tour-continent', tourController.handelGetTourByContinent);
     //Api tourHotel
     router.post('/api/create-new-tourHotel', tourHotelController.handleCreateTourHotel);
     router.put('/api/edit-tourHotel', tourHotelController.handleEditTourHotel);

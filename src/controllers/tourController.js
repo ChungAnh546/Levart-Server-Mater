@@ -96,10 +96,35 @@ let handelGetTourByRegion = async (req, res) => {
         }
     )
 }
+let handelGetTourByContinent = async (req, res) => {
+    let continent = req.query.continent;//
+
+    if (!continent) {
+        return res.status(400).json(
+            {
+                code: 400,
+                errCode: 1,
+                errMessage: 'Missing required parameters',
+
+            }
+        )
+    }
+
+    let tour = await tourService.getTourByContinent(continent);
+
+    return res.status(tour.code).json(
+        {
+            errCode: 0,
+            errMessage: 'Ok',
+            tour: tour.tour
+        }
+    )
+}
 module.exports = {
     handleCreateTour: handleCreateTour,
     handleEditTour: handleEditTour,
     handleGetAllTour: handleGetAllTour,
     handleDeleteTour: handleDeleteTour,
-    handelGetTourByRegion: handelGetTourByRegion
+    handelGetTourByRegion: handelGetTourByRegion,
+    handelGetTourByContinent: handelGetTourByContinent
 }
