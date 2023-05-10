@@ -14,6 +14,7 @@ import allCodeController from "../controllers/allCodeController.js";
 import destinationController from "../controllers/destinationController.js";
 import otpController from "../controllers/otpController.js";
 import dayDetailController from "../controllers/dayDetailController.js";
+import arrayImageController from "../controllers/arrayImageController.js";
 import { verifyToken } from "../middleware/auth";
 
 let router = express.Router();
@@ -94,6 +95,16 @@ let initWebRoutes = (app) => {
     router.post('/api/verify-otp-phone', otpController.handelVerifyOTPWithPhone);
     //Api dayDetails
     router.post('/api/day-detail/create', dayDetailController.handleCreateDayDetail);
+    router.put('/api/day-detail/edit', dayDetailController.handleEditDayDetail);
+    router.get('/api/day-detail/get', dayDetailController.handleGetDayDetail);
+    router.delete('/api/day-detail/delete', dayDetailController.handleDeleteDayDetail);
+    // router.delete('/api/day-detail/delete/tour-id', dayDetailController.handleDeleteDayDetail);
+    //Api image array tour
+    router.post('/api/array-image/create', arrayImageController.handleCreateArrayImage);
+    router.put('/api/array-image/edit', arrayImageController.handleEditArrayImage);
+    router.get('/api/array-image/get', arrayImageController.handleGetArrayImage);
+    router.delete('/api/array-image/delete', arrayImageController.handleDeleteArrayImage);
+
     return app.use("/", router);
 }
 

@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
             /// Tour.hasMany(models.BookTour, { foreignKey: 'tourId', as: 'bookTourData' });
             // define association here
             Tour.hasMany(models.TourDetails, { foreignKey: 'tourId', as: 'tourDetailData' });
+            Tour.hasMany(models.ArrayImage, { foreignKey: 'tableId', as: 'imageData' });
         }
     };
     Tour.init({

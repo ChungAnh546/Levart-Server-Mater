@@ -1,11 +1,11 @@
 import db from "../models/index";
-let createNewDayDetail = (data) => {
+let createNewArrayImage = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            await db.TourDetails.create({
-                title: data.title,
-                schedule: data.schedule,
-                tourId: data.tourId,
+            await db.ArrayImage.create({
+                tableId: data.tableId,
+                image: data.image,
+
 
 
 
@@ -24,20 +24,20 @@ let createNewDayDetail = (data) => {
         }
     })
 }
-let getDayDetail = (id) => {
+let getArrayImage = (id) => {
 
     return new Promise(async (resolve, reject) => {
 
         try {
 
-            let dayDetail = '';
+            let arrayImage = '';
             if (id === 'ALL') {
-                dayDetail = await db.TourDetails.findAll({
+                arrayImage = await db.ArrayImage.findAll({
 
                 });
             }
             if (id && id !== 'ALL') {
-                dayDetail = await db.TourDetails.findOne({
+                arrayImage = await db.ArrayImage.findOne({
                     where: { id: id }
 
                 })
@@ -47,7 +47,7 @@ let getDayDetail = (id) => {
                 errCode: 0,
                 errMessage: '',
                 message: 'OK',
-                dayDetail: dayDetail
+                arrayImage: arrayImage
 
             })
         } catch (error) {
@@ -55,31 +55,31 @@ let getDayDetail = (id) => {
         }
     })
 }
-let deleteDayDetail = (dayDetailId) => {
+let deleteArrayImage = (arrayImageId) => {
     return new Promise(async (resolve, reject) => {
-        let dayDetail = await db.TourDetails.findOne({
-            where: { id: dayDetailId }
+        let arrayImage = await db.ArrayImage.findOne({
+            where: { id: arrayImageId }
         })
-        if (!dayDetail) {
+        if (!arrayImage) {
             resolve({
                 code: 404,
                 errCode: 2,
-                errMessage: `The dayDetail isn't exist`
+                errMessage: `The arrayImage isn't exist`
             })
 
         }
-        await db.TourDetails.destroy({
-            where: { id: dayDetailId }
+        await db.ArrayImage.destroy({
+            where: { id: arrayImageId }
         })
         resolve({
             code: 200,
             errCode: 0,
-            message: `The dayDetail is deleted`
+            message: `The arrayImage is deleted`
         })
 
     })
 }
-let updateDayDetailData = (data) => {
+let updateArrayImageData = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (!data.id) {
@@ -89,18 +89,18 @@ let updateDayDetailData = (data) => {
                     Message: 'Missing required parameters!'
                 })
             }
-            let dayDetail = await db.TourDetails.findOne({
+            let arrayImage = await db.ArrayImage.findOne({
                 where: { id: data.id }, raw: false
             })
-            if (dayDetail) {
-                dayDetail.title = data.title;
-                dayDetail.schedule = data.schedule;
+            if (arrayImage) {
+                arrayImage.tableId = data.tableId;
+                arrayImage.image = data.image;
 
-                await dayDetail.save();
+                await arrayImage.save();
                 resolve({
                     code: 202,
                     errCode: 0,
-                    Message: 'Update the dayDetail succeeds!'
+                    Message: 'Update the arrayImage succeeds!'
                 })
 
 
@@ -108,7 +108,7 @@ let updateDayDetailData = (data) => {
                 resolve({
                     code: 204,
                     errCode: 2,
-                    Message: `dayDetail's not found!`
+                    Message: `arrayImage's not found!`
                 })
             }
         } catch (e) {
@@ -117,8 +117,8 @@ let updateDayDetailData = (data) => {
     })
 }
 module.exports = {
-    getDayDetail: getDayDetail,
-    createNewDayDetail: createNewDayDetail,
-    deleteDayDetail: deleteDayDetail,
-    updateDayDetailData: updateDayDetailData
+    getArrayImage: getArrayImage,
+    createNewArrayImage: createNewArrayImage,
+    deleteArrayImage: deleteArrayImage,
+    updateArrayImageData: updateArrayImageData
 }
