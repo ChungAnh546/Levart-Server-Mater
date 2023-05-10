@@ -12,11 +12,14 @@ let createNewTour = (data) => {
                 dateBack: data.dateBack,
                 state: data.state,
                 note: data.note,
-                imgUML: data.imgUML,
-                numPersonA: data.numPersonA,
-                numPersonB: data.numPersonB,
-                pricePersonA: data.pricePersonA,
-                pricePersonB: data.pricePersonB,
+                image: data.image,
+                adultSlot: data.adultSlot,
+                childrenSlot: data.childrenSlot,
+                adultPrice: data.adultPrice,
+                childPrice: data.childPrice,
+                babySlot: data.babySlot,
+                babyPrice: data.babyPrice,
+                dayDetail: data.dayDetail,
                 destinationId: data.destinationId,
                 unit: data.unit,
 
@@ -59,13 +62,18 @@ let updateTourData = (data) => {
                 tour.dateBack = data.dateBack;
                 tour.state = data.state;
                 tour.note = data.note;
-                tour.imgUML = data.imgUML;
-                tour.numPersonA = data.numPersonA;
-                tour.numPersonB = data.numPersonB;
-                tour.pricePersonA = data.pricePersonA;
-                tour.pricePersonB = data.pricePersonB;
+                tour.image = data.image;
+                tour.adultSlot = data.adultSlot;
+                tour.childrenSlot = data.childrenSlot;
+                tour.adultPrice = data.adultPrice;
+                tour.childPrice = data.childPrice;
+                tour.babySlot = data.babySlot;
+                tour.babyPrice = data.babyPrice;
+                tour.dayDetail = data.dayDetail;
                 tour.type = data.type;
+                tour.destinationId = data.destinationId;
                 tour.unit = data.unit;
+                tour.dayDetail = data.dayDetail;
                 //
                 await tour.save();
                 resolve({
@@ -98,21 +106,37 @@ let getAllTour = (tourId) => {
                 tour = await db.Tour.findAll(
                     {
                         include: [
-                            { model: db.Destination, as: 'destinationData' }
+                            { model: db.Destination, as: 'destinationData' },
+                            { model: db.TourDetails, as: 'tourDetailData' }
                         ],
                         raw: true,
                         nest: true
                     }
                 );
+                for (let index = 0; index < tour.length; index++) {
+                    const element = tour[index];
+                    tour[index].tourDetailData = await db.TourDetails.findAll({
+                        where: {
+                            tourId: element.id
+                        }, attributes: ['title', 'schedule', 'tourId']
+                    })
+                }
             }
             if (tourId && tourId !== 'ALL') {
                 tour = await db.Tour.findOne({
                     where: { id: tourId },
+
                     include: [
-                        { model: db.Destination, as: 'destinationData' }
+                        { model: db.Destination, as: 'destinationData' },
+                        { model: db.TourDetails, attributes: ['title', 'schedule', 'tourId'], as: 'tourDetailData' }
                     ],
                     raw: true,
                     nest: true
+                })
+                tour.tourDetailData = await db.TourDetails.findAll({
+                    where: {
+                        tourId: tourId
+                    }, attributes: ['title', 'schedule', 'tourId']
                 })
             }
             // console.log("continent", await getTourByContinent("Chau A"));

@@ -13,7 +13,9 @@ import tourHotelController from "../controllers/tourHotelController";
 import allCodeController from "../controllers/allCodeController.js";
 import destinationController from "../controllers/destinationController.js";
 import otpController from "../controllers/otpController.js";
+import dayDetailController from "../controllers/dayDetailController.js";
 import { verifyToken } from "../middleware/auth";
+
 let router = express.Router();
 
 let initWebRoutes = (app) => {
@@ -90,7 +92,8 @@ let initWebRoutes = (app) => {
     router.post('/api/verifyOtp', userController.verifyOtp);
     router.post('/api/send-otp-phone', otpController.handleSendOTPWithSMS);
     router.post('/api/verify-otp-phone', otpController.handelVerifyOTPWithPhone);
-
+    //Api dayDetails
+    router.post('/api/day-detail/create', dayDetailController.handleCreateDayDetail);
     return app.use("/", router);
 }
 

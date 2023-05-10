@@ -73,9 +73,7 @@ module.exports = {
                 type: Sequelize.STRING
             },
             dayDetail: {
-
-                type: Sequelize.ARRAY(Sequelize.JSON)
-
+                type: Sequelize.JSON
             },
 
             createdAt: {

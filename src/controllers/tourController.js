@@ -16,7 +16,7 @@ let handleCreateTour = async (req, res) => {
 }//, 'dateGo', 'dateBack'
 let checkValueInput = (data) => {
     let isValid = true;
-    let arrInput = ['placeDest', 'placeGo', 'numPersonA', 'numPersonB', 'pricePersonA', 'pricePersonB', 'destinationId']
+    let arrInput = ['placeDest', 'placeGo', 'adultSlot', 'childrenSlot', 'adultPrice', 'childPrice', 'destinationId']
     for (let i = 0; i < arrInput.length; i++) {
         if (!data[arrInput[i]]) {
             isValid = false;
@@ -73,7 +73,7 @@ let handleDeleteTour = async (req, res) => {
 
 }
 let handelGetTourByRegion = async (req, res) => {
-    let region = req.query.region;//all,id
+    let region = req.query.region;//
 
     if (!region) {
         return res.status(400).json(
