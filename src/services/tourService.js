@@ -107,7 +107,8 @@ let getAllTour = (tourId) => {
                     {
                         include: [
                             { model: db.Destination, as: 'destinationData' },
-                            { model: db.TourDetails, as: 'tourDetailData' }
+                            { model: db.TourDetails, as: 'tourDetailData' },
+                            { model: db.ArrayImage, as: 'imageData' }
                         ],
                         raw: true,
                         nest: true
@@ -119,7 +120,12 @@ let getAllTour = (tourId) => {
                         where: {
                             tourId: element.id
                         }, attributes: ['title', 'schedule', 'tourId']
-                    })
+                    });
+                    tour[index].imageData = await db.ArrayImage.findAll({
+                        where: {
+                            tableId: element.id
+                        }, attributes: ['tableId', 'image']
+                    });
                 }
             }
             if (tourId && tourId !== 'ALL') {
@@ -128,16 +134,22 @@ let getAllTour = (tourId) => {
 
                     include: [
                         { model: db.Destination, as: 'destinationData' },
-                        { model: db.TourDetails, attributes: ['title', 'schedule', 'tourId'], as: 'tourDetailData' }
+                        { model: db.TourDetails, attributes: ['title', 'schedule', 'tourId'], as: 'tourDetailData' },
+                        { model: db.ArrayImage, as: 'imageData' }
                     ],
                     raw: true,
                     nest: true
-                })
+                });
                 tour.tourDetailData = await db.TourDetails.findAll({
                     where: {
                         tourId: tourId
                     }, attributes: ['title', 'schedule', 'tourId']
-                })
+                });
+                tour.imageData = await db.ArrayImage.findAll({
+                    where: {
+                        tableId: tourId
+                    }, attributes: ['tableId', 'image']
+                });
             }
             // console.log("continent", await getTourByContinent("Chau A"));
             // console.log("country", await getTourByCountry("Viet Nam"));
