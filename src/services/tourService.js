@@ -24,14 +24,18 @@ let createNewTour = (data) => {
                 unit: data.unit,
 
 
-            })
-            resolve({
-                code: 201,
-                errCode: 0,
-                errMessage: '',
-                message: 'OK',
+            }).then((tour) => {
+                resolve({
+                    code: 201,
+                    errCode: 0,
+                    errMessage: '',
+                    message: 'OK',
+                    tourId: tour.id
 
-            })
+                })
+            }
+            )
+
 
 
         } catch (error) {
