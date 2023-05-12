@@ -107,7 +107,7 @@ let getAllTour = (tourId) => {
                     {
                         include: [
                             { model: db.Destination, as: 'destinationData' },
-                            { model: db.TourDetails, as: 'tourDetailData' },
+                            // { model: db.TourDetails, as: 'tourDetailData' },
                             { model: db.ArrayImage, as: 'imageData' }
                         ],
                         raw: true,
@@ -134,7 +134,7 @@ let getAllTour = (tourId) => {
 
                     include: [
                         { model: db.Destination, as: 'destinationData' },
-                        { model: db.TourDetails, attributes: ['title', 'schedule', 'tourId'], as: 'tourDetailData' },
+                        // { model: db.TourDetails, attributes: ['title', 'schedule', 'tourId'], as: 'tourDetailData' },
                         { model: db.ArrayImage, as: 'imageData' }
                     ],
                     raw: true,
@@ -185,7 +185,17 @@ let getTourByContinent = (Continent) => {
                         ],
                         raw: true,
                         nest: true
-                    })
+                    });
+                    tour.tourDetailData = await db.TourDetails.findAll({
+                        where: {
+                            tourId: tourId
+                        }, attributes: ['title', 'schedule', 'tourId']
+                    });
+                    tour.imageData = await db.ArrayImage.findAll({
+                        where: {
+                            tableId: tourId
+                        }, attributes: ['tableId', 'image']
+                    });
                 }
 
             }
@@ -218,7 +228,17 @@ let getTourByCountry = (Country) => {
                         ],
                         raw: true,
                         nest: true
-                    })
+                    });
+                    tour.tourDetailData = await db.TourDetails.findAll({
+                        where: {
+                            tourId: tourId
+                        }, attributes: ['title', 'schedule', 'tourId']
+                    });
+                    tour.imageData = await db.ArrayImage.findAll({
+                        where: {
+                            tableId: tourId
+                        }, attributes: ['tableId', 'image']
+                    });
                 }
             }
             resolve({
@@ -250,7 +270,17 @@ let getTourByRegion = (Region) => {
                         ],
                         raw: true,
                         nest: true
-                    })
+                    });
+                    tour.tourDetailData = await db.TourDetails.findAll({
+                        where: {
+                            tourId: tourId
+                        }, attributes: ['title', 'schedule', 'tourId']
+                    });
+                    tour.imageData = await db.ArrayImage.findAll({
+                        where: {
+                            tableId: tourId
+                        }, attributes: ['tableId', 'image']
+                    });
                 }
             }
             resolve({
@@ -282,7 +312,17 @@ let getTourByAddress = (Address) => {
                         ],
                         raw: true,
                         nest: true
-                    })
+                    });
+                    tour.tourDetailData = await db.TourDetails.findAll({
+                        where: {
+                            tourId: tourId
+                        }, attributes: ['title', 'schedule', 'tourId']
+                    });
+                    tour.imageData = await db.ArrayImage.findAll({
+                        where: {
+                            tableId: tourId
+                        }, attributes: ['tableId', 'image']
+                    });
                 }
             }
             resolve({

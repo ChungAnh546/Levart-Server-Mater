@@ -33,10 +33,10 @@ module.exports = {
                 type: Sequelize.STRING
             },
             dateGo: {
-                type: Sequelize.DATE
+                type: Sequelize.STRING
             },
             dateBack: {
-                type: Sequelize.DATE
+                type: Sequelize.STRING
             },
             state: {
                 type: Sequelize.BOOLEAN

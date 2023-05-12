@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         description: DataTypes.TEXT,
         contents: DataTypes.TEXT,
         state: DataTypes.BOOLEAN,
-        postDate: DataTypes.DATE,
+        postDate: DataTypes.STRING,
         imgUML: DataTypes.BLOB('long'),
         creatorId: DataTypes.INTEGER,
 

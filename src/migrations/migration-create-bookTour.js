@@ -33,7 +33,7 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
             date: {
-                type: Sequelize.DATE
+                type: Sequelize.STRING
             },
             type: {
                 type: Sequelize.STRING

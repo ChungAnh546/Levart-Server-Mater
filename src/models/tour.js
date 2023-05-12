@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
             //Tour.hasMany(models.Surcharger,{})
             /// Tour.hasMany(models.BookTour, { foreignKey: 'tourId', as: 'bookTourData' });
             // define association here
-            Tour.hasMany(models.TourDetails, { foreignKey: 'tourId', as: 'tourDetailData' });
+            // Tour.hasMany(models.TourDetails, { foreignKey: 'tourId', as: 'tourDetailData' });
             Tour.hasMany(models.ArrayImage, { foreignKey: 'tableId', as: 'imageData' });
         }
     };
@@ -24,8 +24,8 @@ module.exports = (sequelize, DataTypes) => {
         nameTour: DataTypes.STRING,
         placeDest: DataTypes.STRING,
         placeGo: DataTypes.STRING,
-        dateGo: DataTypes.DATE,
-        dateBack: DataTypes.DATE,
+        dateGo: DataTypes.STRING,
+        dateBack: DataTypes.STRING,
         state: DataTypes.BOOLEAN,
         note: DataTypes.TEXT,
         image: DataTypes.BLOB('long'),

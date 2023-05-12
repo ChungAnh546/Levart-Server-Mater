@@ -23,7 +23,7 @@ module.exports = {
                 type: Sequelize.FLOAT
             },
             bookTourDate: {
-                type: Sequelize.DATE
+                type: Sequelize.STRING
             },
             promotionCode: {
                 type: Sequelize.STRING

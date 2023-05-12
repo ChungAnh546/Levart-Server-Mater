@@ -28,7 +28,7 @@ module.exports = {
                 type: Sequelize.BOOLEAN
             },
             postDate: {
-                type: Sequelize.DATE
+                type: Sequelize.STRING
             },
             imgUML: {
                 type: Sequelize.BLOB('long')

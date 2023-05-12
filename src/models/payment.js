@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         customerId: DataTypes.INTEGER,
         amount: DataTypes.FLOAT,
         paymentMethod: DataTypes.STRING,
-        paymentDate: DataTypes.DATE,
+        paymentDate: DataTypes.STRING,
         status: DataTypes.STRING,
         note: DataTypes.TEXT,
 

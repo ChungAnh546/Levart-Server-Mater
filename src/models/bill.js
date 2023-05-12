@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         customerId: DataTypes.INTEGER,
         creatorId: DataTypes.INTEGER,
         totalCost: DataTypes.FLOAT,
-        bookTourDate: DataTypes.DATE,
+        bookTourDate: DataTypes.STRING,
         promotionCode: DataTypes.STRING,
         status: DataTypes.STRING,
 

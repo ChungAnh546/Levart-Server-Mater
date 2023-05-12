@@ -19,7 +19,7 @@ module.exports = {
                 type: Sequelize.STRING
             },
             paymentDate: {
-                type: Sequelize.DATE
+                type: Sequelize.STRING
             },
             status: {
                 type: Sequelize.STRING

@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         adultSlot: DataTypes.INTEGER,
         childrenSlot: DataTypes.INTEGER,
         babySlot: DataTypes.INTEGER,
-        date: DataTypes.DATE,
+        date: DataTypes.STRING,
         type: DataTypes.STRING,
         paymentId: DataTypes.INTEGER,
         state: DataTypes.STRING,
