@@ -66,6 +66,7 @@ let updateTourData = (data) => {
                 tour.dateBack = data.dateBack;
                 tour.state = data.state;
                 tour.note = data.note;
+                tour.transportation = data.transportation;
                 tour.image = data.image;
                 tour.adultSlot = data.adultSlot;
                 tour.childrenSlot = data.childrenSlot;
