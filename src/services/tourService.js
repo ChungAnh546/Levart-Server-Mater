@@ -7,7 +7,7 @@ let createNewTour = (data) => {
                 nameTour: data.nameTour,
                 placeDest: data.placeDest,
                 placeGo: data.placeGo,
-
+                transportation: data.transportation,
                 dateGo: data.dateGo,
                 dateBack: data.dateBack,
                 state: data.state,

@@ -123,6 +123,19 @@ let regisUserOtp = async (req, res, next) => {
         next(error)
     }
 }
+let createOtp = async (req, res, next) => {
+
+    try {
+        let email = req.body.email;
+        let message = await userService.createOtp(email);
+
+        return res.status(message.code).json(message);
+
+    } catch (error) {
+        console.error(error)
+        next(error)
+    }
+}
 let verifyOtp = async (req, res, next) => {
     try {
         let { email, otp } = req.body;
@@ -142,5 +155,6 @@ module.exports = {
     handleDeleteUser: handleDeleteUser,
     verify: verify,
     regisUserOtp: regisUserOtp,
-    verifyOtp: verifyOtp
+    verifyOtp: verifyOtp,
+    createOtp: createOtp
 }

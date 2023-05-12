@@ -38,6 +38,7 @@ module.exports = (sequelize, DataTypes) => {
         destinationId: DataTypes.INTEGER,
         unit: DataTypes.STRING,
         dayDetail: DataTypes.INTEGER,
+        transportation: DataTypes.STRING,
 
 
     }, {

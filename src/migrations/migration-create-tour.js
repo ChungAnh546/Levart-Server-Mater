@@ -75,7 +75,9 @@ module.exports = {
             dayDetail: {
                 type: Sequelize.JSON
             },
-
+            transportation: {
+                type: Sequelize.STRING
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE

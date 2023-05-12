@@ -10,7 +10,7 @@ let handleCreateOtp = async (req, res) => {
 
 }
 let handleSendOTPWithSMS = (req, res) => {
-
+    //phone
     const accountSid = "AC8de06f10bae09323f71ecabe1d944b30";
     const authToken = process.env.TWILIO_AUTH_TOKEN;
     const verifySid = "VA75e8f1e53519a2846a806caa319a74db";
@@ -50,6 +50,7 @@ let handleSendOTPWithSMS = (req, res) => {
     // });
 }
 let handelVerifyOTPWithPhone = (req, res) => {
+    //phone , code
     if (req.body.code && req.body.code !== '' && req.body.phone && req.body.phone !== '') {
         const accountSid = "AC8de06f10bae09323f71ecabe1d944b30";
         const authToken = process.env.TWILIO_AUTH_TOKEN;

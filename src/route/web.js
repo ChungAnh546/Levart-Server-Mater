@@ -89,6 +89,7 @@ let initWebRoutes = (app) => {
     //Api verify
     router.get('/api/verify', userController.verify);
     //Api Otp
+    router.post('/api/create-otp', userController.createOtp);
     router.post('/api/regisUserOtp', userController.regisUserOtp);
     router.post('/api/create-new-Otp', otpController.handleCreateOtp);
     router.post('/api/verifyOtp', userController.verifyOtp);
