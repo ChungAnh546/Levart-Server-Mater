@@ -185,26 +185,33 @@ let getTourByContinent = (Continent) => {
                         ],
                         raw: true,
                         nest: true
+                    }).then(async (tour) => {
+                        for (let index = 0; index < tour.length; index++) {
+                            const element = tour[index];
+                            tour[index].tourDetailData = await db.TourDetails.findAll({
+                                where: {
+                                    tourId: element.id
+                                }, attributes: ['title', 'schedule', 'tourId']
+                            });
+                            tour[index].imageData = await db.ArrayImage.findAll({
+                                where: {
+                                    tableId: element.id
+                                }, attributes: ['tableId', 'image']
+                            });
+                        }
+                        console.log(tour);
+                        resolve({
+                            code: 200,
+                            errCode: 0,
+                            Message: '',
+                            tour: tour
+                        });
                     });
-                    tour.tourDetailData = await db.TourDetails.findAll({
-                        where: {
-                            tourId: tourId
-                        }, attributes: ['title', 'schedule', 'tourId']
-                    });
-                    tour.imageData = await db.ArrayImage.findAll({
-                        where: {
-                            tableId: tourId
-                        }, attributes: ['tableId', 'image']
-                    });
+
                 }
 
             }
-            resolve({
-                code: 200,
-                errCode: 0,
-                Message: '',
-                tour: tour
-            })
+
         } catch (error) {
             reject(error)
         }
@@ -221,32 +228,39 @@ let getTourByCountry = (Country) => {
             if (Country) {
                 let IdTour = await destinationService.getDestinationByCountry(Country);
                 if (IdTour.destination) {
-                    tour = await db.Tour.findOne({
+                    let tour = await db.Tour.findOne({
                         where: { destinationId: IdTour.destination.id },
                         include: [
                             { model: db.Destination, as: 'destinationData' }
                         ],
                         raw: true,
                         nest: true
+                    }).then(async (tour) => {
+                        for (let index = 0; index < tour.length; index++) {
+                            const element = tour[index];
+                            tour[index].tourDetailData = await db.TourDetails.findAll({
+                                where: {
+                                    tourId: element.id
+                                }, attributes: ['title', 'schedule', 'tourId']
+                            });
+                            tour[index].imageData = await db.ArrayImage.findAll({
+                                where: {
+                                    tableId: element.id
+                                }, attributes: ['tableId', 'image']
+                            });
+                        }
+                        console.log(tour);
+                        resolve({
+                            code: 200,
+                            errCode: 0,
+                            Message: '',
+                            tour: tour
+                        });
                     });
-                    tour.tourDetailData = await db.TourDetails.findAll({
-                        where: {
-                            tourId: tourId
-                        }, attributes: ['title', 'schedule', 'tourId']
-                    });
-                    tour.imageData = await db.ArrayImage.findAll({
-                        where: {
-                            tableId: tourId
-                        }, attributes: ['tableId', 'image']
-                    });
+
                 }
             }
-            resolve({
-                code: 200,
-                errCode: 0,
-                Message: '',
-                tour: tour
-            })
+
         } catch (error) {
             reject(error)
         }
@@ -270,25 +284,32 @@ let getTourByRegion = (Region) => {
                         ],
                         raw: true,
                         nest: true
+                    }).then(async (tour) => {
+                        for (let index = 0; index < tour.length; index++) {
+                            const element = tour[index];
+                            tour[index].tourDetailData = await db.TourDetails.findAll({
+                                where: {
+                                    tourId: element.id
+                                }, attributes: ['title', 'schedule', 'tourId']
+                            });
+                            tour[index].imageData = await db.ArrayImage.findAll({
+                                where: {
+                                    tableId: element.id
+                                }, attributes: ['tableId', 'image']
+                            });
+                        }
+                        console.log(tour);
+                        resolve({
+                            code: 200,
+                            errCode: 0,
+                            Message: '',
+                            tour: tour
+                        });
                     });
-                    tour.tourDetailData = await db.TourDetails.findAll({
-                        where: {
-                            tourId: tourId
-                        }, attributes: ['title', 'schedule', 'tourId']
-                    });
-                    tour.imageData = await db.ArrayImage.findAll({
-                        where: {
-                            tableId: tourId
-                        }, attributes: ['tableId', 'image']
-                    });
+
                 }
             }
-            resolve({
-                code: 200,
-                errCode: 0,
-                Message: '',
-                tour: tour
-            })
+
         } catch (error) {
             reject(error)
         }
@@ -312,25 +333,32 @@ let getTourByAddress = (Address) => {
                         ],
                         raw: true,
                         nest: true
+                    }).then(async (tour) => {
+                        for (let index = 0; index < tour.length; index++) {
+                            const element = tour[index];
+                            tour[index].tourDetailData = await db.TourDetails.findAll({
+                                where: {
+                                    tourId: element.id
+                                }, attributes: ['title', 'schedule', 'tourId']
+                            });
+                            tour[index].imageData = await db.ArrayImage.findAll({
+                                where: {
+                                    tableId: element.id
+                                }, attributes: ['tableId', 'image']
+                            });
+                        }
+                        console.log(tour);
+                        resolve({
+                            code: 200,
+                            errCode: 0,
+                            Message: '',
+                            tour: tour
+                        });
                     });
-                    tour.tourDetailData = await db.TourDetails.findAll({
-                        where: {
-                            tourId: tourId
-                        }, attributes: ['title', 'schedule', 'tourId']
-                    });
-                    tour.imageData = await db.ArrayImage.findAll({
-                        where: {
-                            tableId: tourId
-                        }, attributes: ['tableId', 'image']
-                    });
+
                 }
             }
-            resolve({
-                code: 200,
-                errCode: 0,
-                Message: '',
-                tour: tour
-            })
+
         } catch (error) {
             reject(error)
         }
