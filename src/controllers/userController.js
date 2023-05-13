@@ -19,9 +19,13 @@ let handleLogin = async (req, res) => {
     }
     let userData = await userService.handleUserLogin(email, password);
     //tao jwt
-    const accessToken = jwt.sign(userData.user, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: "360000s"
-    });
+    const accessToken = null;
+    if (userData.errCode === 0) {
+        accessToken = jwt.sign(userData.user, process.env.ACCESS_TOKEN_SECRET, {
+            expiresIn: "360000s"
+        });
+    }
+
     return res.status(200).json(
         {
             errCode: userData.errCode,

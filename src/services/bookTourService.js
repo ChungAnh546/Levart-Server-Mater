@@ -98,8 +98,8 @@ let createNewBookTour = (data) => {
             await db.BookTour.create({
                 tourId: data.tourId,
                 customerId: data.customerId,
-                numPersonA: data.numPersonA,
-                numPersonB: data.numPersonB,
+                adultSlot: data.adultSlot,
+                childrenSlot: data.childrenSlot,
                 date: data.date,
                 type: data.type,
                 paymentId: data.paymentId,
