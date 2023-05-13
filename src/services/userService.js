@@ -118,6 +118,29 @@ let checkUserEmail = (userEmail) => {
         }
     })
 }
+let checkUserPhone = (userPhone) => {
+
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            let user = await db.User.findOne(
+                {
+
+                    where: { phoneNumber: userPhone }
+
+
+
+                }
+            )
+            if (user) { resolve(true) } else {
+                resolve(false)
+            }
+
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 let getAllUsers = (userId) => {
 
     return new Promise(async (resolve, reject) => {
@@ -162,12 +185,14 @@ let createNewUser = (data) => {
                 })
 
             }
-            let check = await checkUserEmail(data.email)
-            if (check === true) {
+            let checkEmail = await checkUserEmail(data.email);
+            let checkPhone = await checkUserPhone(data.phoneNumber);
+            if (checkEmail === true || checkPhone === true) {
+
                 resolve({
                     code: 400,
                     errCode: 2,
-                    errMessage: 'Your email is already in used, Plz try another email ',
+                    errMessage: 'Your email or phone is already in used, Plz try another email ',
 
 
                 })

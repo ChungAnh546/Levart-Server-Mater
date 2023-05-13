@@ -19,11 +19,20 @@ let handleLogin = async (req, res) => {
     }
     let userData = await userService.handleUserLogin(email, password);
     //tao jwt
-    const accessToken = null;
+
     if (userData.errCode === 0) {
-        accessToken = jwt.sign(userData.user, process.env.ACCESS_TOKEN_SECRET, {
+        const accessToken = jwt.sign(userData.user, process.env.ACCESS_TOKEN_SECRET, {
             expiresIn: "360000s"
+
         });
+        return res.status(200).json(
+            {
+                errCode: userData.errCode,
+                errMessage: userData.errMessage,
+                user: userData.user ? userData.user : {},
+                accessToken: accessToken
+            }
+        )
     }
 
     return res.status(200).json(
@@ -31,7 +40,7 @@ let handleLogin = async (req, res) => {
             errCode: userData.errCode,
             errMessage: userData.errMessage,
             user: userData.user ? userData.user : {},
-            accessToken: accessToken
+            accessToken: null
         }
     )
 
