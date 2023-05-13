@@ -15,7 +15,7 @@ import destinationController from "../controllers/destinationController.js";
 import otpController from "../controllers/otpController.js";
 import dayDetailController from "../controllers/dayDetailController.js";
 import arrayImageController from "../controllers/arrayImageController.js";
-import { verifyToken } from "../middleware/auth";
+//import { verifyToken } from "../middleware/auth";
 
 let router = express.Router();
 

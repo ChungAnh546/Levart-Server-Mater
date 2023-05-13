@@ -67,7 +67,7 @@ let handleGetAllUsers = async (req, res) => {
 
             errCode: 0,
             errMessage: 'Ok',
-            user: user.user
+            user: user.users
         }
     )
 
