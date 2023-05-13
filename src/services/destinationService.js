@@ -107,7 +107,7 @@ let getDestinationByContinent = (destinationContinent) => {
             let destination = '';
 
             if (destinationContinent) {
-                destination = await db.Destination.findOne({
+                destination = await db.Destination.findAll({
                     where: { continent: destinationContinent }
                 })
             }

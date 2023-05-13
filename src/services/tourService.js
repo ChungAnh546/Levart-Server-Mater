@@ -183,36 +183,45 @@ let getTourByContinent = (Continent) => {
             if (Continent) {
                 let IdTour = await destinationService.getDestinationByContinent(Continent);
                 if (IdTour.destination) {
-                    tour = await db.Tour.findOne({
-                        where: { destinationId: IdTour.destination.id },
-                        include: [
-                            { model: db.Destination, as: 'destinationData' }
-                        ],
-                        raw: true,
-                        nest: true
-                    }).then(async (tour) => {
-                        for (let index = 0; index < tour.length; index++) {
-                            const element = tour[index];
-                            tour[index].tourDetailData = await db.TourDetails.findAll({
-                                where: {
-                                    tourId: element.id
-                                }, attributes: ['title', 'schedule', 'tourId']
-                            });
-                            tour[index].imageData = await db.ArrayImage.findAll({
-                                where: {
-                                    tableId: element.id
-                                }, attributes: ['tableId', 'image']
-                            });
-                        }
-                        console.log(tour);
-                        resolve({
-                            code: 200,
-                            errCode: 0,
-                            Message: '',
-                            tour: tour
-                        });
-                    });
 
+                    tour = [];
+                    for (let index = 0; index < IdTour.destination.length; index++) {
+                        const element = IdTour.destination[index];
+                        tour.push(await db.Tour.findAll({
+                            where: { destinationId: element.id },
+                            include: [
+                                { model: db.Destination, as: 'destinationData' }
+                            ],
+                            raw: true,
+                            nest: true
+                        }))
+                    }
+
+
+
+                    // .then(async (tour) => {
+                    //     for (let index = 0; index < tour.length; index++) {
+                    //         const element = tour[index];
+                    //         tour[index].tourDetailData = await db.TourDetails.findAll({
+                    //             where: {
+                    //                 tourId: element.id
+                    //             }, attributes: ['title', 'schedule', 'tourId']
+                    //         });
+                    //         tour[index].imageData = await db.ArrayImage.findAll({
+                    //             where: {
+                    //                 tableId: element.id
+                    //             }, attributes: ['tableId', 'image']
+                    //         });
+                    //     }
+
+
+                    // });
+                    resolve({
+                        code: 200,
+                        errCode: 0,
+                        Message: '',
+                        tour: tour
+                    });
                 }
 
             }
@@ -233,7 +242,7 @@ let getTourByCountry = (Country) => {
             if (Country) {
                 let IdTour = await destinationService.getDestinationByCountry(Country);
                 if (IdTour.destination) {
-                    let tour = await db.Tour.findOne({
+                    let tour = await db.Tour.findAll({
                         where: { destinationId: IdTour.destination.id },
                         include: [
                             { model: db.Destination, as: 'destinationData' }
@@ -331,7 +340,7 @@ let getTourByAddress = (Address) => {
             if (Address) {
                 let IdTour = await destinationService.getDestinationByAddress(Address);
                 if (IdTour.destination) {
-                    tour = await db.Tour.findOne({
+                    tour = await db.Tour.findAll({
                         where: { destinationId: IdTour.destination.id },
                         include: [
                             { model: db.Destination, as: 'destinationData' }

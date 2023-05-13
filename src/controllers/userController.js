@@ -35,7 +35,7 @@ let handleLogin = async (req, res) => {
         )
     }
 
-    return res.status(200).json(
+    return res.status(400).json(
         {
             errCode: userData.errCode,
             errMessage: userData.errMessage,
