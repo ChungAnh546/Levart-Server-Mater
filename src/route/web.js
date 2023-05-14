@@ -15,6 +15,7 @@ import destinationController from "../controllers/destinationController.js";
 import otpController from "../controllers/otpController.js";
 import dayDetailController from "../controllers/dayDetailController.js";
 import arrayImageController from "../controllers/arrayImageController.js";
+import vnPayController from "../controllers/vnPayController.js"
 //import { verifyToken } from "../middleware/auth";
 
 let router = express.Router();
@@ -106,7 +107,8 @@ let initWebRoutes = (app) => {
     router.put('/api/array-image/edit', arrayImageController.handleEditArrayImage);
     router.get('/api/array-image/get', arrayImageController.handleGetArrayImage);
     router.delete('/api/array-image/delete', arrayImageController.handleDeleteArrayImage);
-
+    //Api payment vnpay
+    router.post('/create_payment_url', vnPayController.vnPay_Payment);
     return app.use("/", router);
 }
 

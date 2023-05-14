@@ -132,8 +132,8 @@ let updateBookTourData = (data) => {
                 where: { id: data.id }, raw: false
             })
             if (bookTour) {
-                bookTour.numPersonA = data.numPersonA;
-                bookTour.numPersonB = data.numPersonB;
+                bookTour.adultSlot = data.adultSlot;
+                bookTour.childrenSlot = data.childrenSlot;
                 bookTour.note = data.note;
                 await bookTour.save();
                 resolve({
@@ -161,7 +161,7 @@ let getBookTour = (bookTourId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let bookTour = '';
-            if (bookTourId === 'ALL') {
+            if (bookTourId && bookTourId === 'ALL') {
                 bookTour = await db.BookTour.findAll();
             }
             if (bookTourId && bookTourId !== 'ALL') {
@@ -169,14 +169,32 @@ let getBookTour = (bookTourId) => {
                     where: { id: bookTourId }
                 })
             }
-            resolve({
-                code: 200,
-                errCode: 0,
-                Message: '',
-                bookTour: bookTour
-            })
+
+
+            if (bookTour !== null) {
+                resolve({
+                    code: 200,
+                    errCode: 0,
+                    Message: '',
+                    bookTour: bookTour
+                })
+            } else {
+                resolve({
+                    code: 400,
+                    errCode: 1,
+                    Message: 'fail',
+                    bookTour: bookTour
+                })
+            }
+
         } catch (error) {
-            reject(error)
+
+            resolve({
+                code: 400,
+                errCode: 1,
+                Message: 'fail',
+
+            })
         }
     })
 }

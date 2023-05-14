@@ -30,7 +30,7 @@ let checkValueInput = (data) => {
 }
 let handleEditBookTour = async (req, res) => {
     let data = req.body;
-    console.log(data);
+
     let message = await bookTourService.updateBookTourData(data);
 
     return res.status(message.code).json(message);
@@ -50,11 +50,20 @@ let handleGetAllBookTour = async (req, res) => {
         )
     }
     let bookTour = await bookTourService.getBookTour(id);
-    return res.status(bookTour.code).json({
-        errCode: 0,
-        errMessage: 'Ok',
-        bookTour: bookTour.bookTour
-    })
+    if (bookTour.code === 400) {
+        return res.status(bookTour.code).json({
+            errCode: 1,
+            errMessage: 'fail',
+            bookTour: bookTour.bookTour
+        })
+    } else {
+        return res.status(bookTour.code).json({
+            errCode: 0,
+            errMessage: '',
+            bookTour: bookTour.bookTour
+        })
+    }
+
 
 }
 let delayBookTour = async (id) => {

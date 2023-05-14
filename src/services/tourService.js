@@ -263,7 +263,7 @@ let getTourByCountry = (Country) => {
                                 }, attributes: ['tableId', 'image']
                             });
                         }
-                        console.log(tour);
+
                         resolve({
                             code: 200,
                             errCode: 0,
@@ -312,7 +312,7 @@ let getTourByRegion = (Region) => {
                                 }, attributes: ['tableId', 'image']
                             });
                         }
-                        console.log(tour);
+
                         resolve({
                             code: 200,
                             errCode: 0,

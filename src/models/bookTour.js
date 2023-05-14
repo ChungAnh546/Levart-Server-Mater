@@ -11,10 +11,10 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            BookTour.belongsTo(models.Bill, { foreignKey: 'bookTourId', targetKey: 'id', as: 'billBookTourData' });
-            BookTour.belongsTo(models.Tour, { foreignKey: 'tourId', targetKey: 'id', as: 'bookTourData' });
+            //BookTour.belongsTo(models.Bill, { foreignKey: 'bookTourId', targetKey: 'id', as: 'billBookTourData' });
+            // BookTour.belongsTo(models.Tour, { foreignKey: 'tourId', targetKey: 'id', as: 'bookTourData' });
             // BookTour.hasMany(models.User, { foreignKey: 'creatorId', as: 'creatorBookTourData' })
-            BookTour.hasOne(models.Payment, { foreignKey: 'paymentId', as: 'paymentBookTourData' });
+            // BookTour.hasOne(models.Payment, { foreignKey: 'paymentId', as: 'paymentBookTourData' });
         }
     };
     BookTour.init({
