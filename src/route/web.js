@@ -31,10 +31,14 @@ let initWebRoutes = (app) => {
     router.get('/delete-crud', homeController.deleteCRUD);
     // api user
     router.post('/api/login', userController.handleLogin);
+    router.post('/api/login/phone', userController.handleLoginByPhone);
     router.get('/api/get-all-users', userController.handleGetAllUsers);
+    router.get('/api/user/search/phone', userController.handleGetUserByPhone);
+    router.get('/api/user/search/email', userController.handleGetUserByEmail);
     router.post('/api/create-new-user', userController.handleCreateNewUser);
     router.put('/api/edit-user', userController.handleEditUser);
     router.delete('/api/delete-user', userController.handleDeleteUser);
+    router.post('/api/user/create/phone', userController.handleCreateNewUserWhenBookTourByPhone);
     router.get('/api/get-all-users', userController.handleGetAllUsers);
     //Api Bills
     router.post('/api/create-new-bill', billController.handleCreateNewBill);

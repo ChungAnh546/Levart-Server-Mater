@@ -230,14 +230,16 @@ let bookTourBasic = (data) => {
 
             if (Tour.tour && Customer.users) {
                 let numRemaining = 0;
+                let slot = 0;
                 //kiểm tra có tồn tại tour custormer và creator ko 
-                if (Tour.tour.numPersonB < data.numPersonB) {
-                    Tour.tour.numPersonB = Tour.tour.numPersonB - data.numPersonB;
+                if (Tour.tour.childrenSlot < data.childrenSlot) {
+                    Tour.tour.childrenSlot = 0;
+                    numRemaining = parseInt(data.childrenSlot) - parseInt(Tour.tour.childrenSlot);
                 } else {
-                    numRemaining = data.numPersonB - Tour.tour.numPersonB;
+                    Tour.tour.childrenSlot = parseInt(Tour.tour.childrenSlot) - parseInt(data.childrenSlot);
                 }
 
-                if (Tour.tour.numPersonA < (data.numPersonA + numRemaining)) {
+                if (Tour.tour.adultSlot < (parseInt(data.adultSlot) + parseInt(numRemaining))) {
                     resolve({
                         code: 400,
                         errCode: 1,
@@ -247,7 +249,8 @@ let bookTourBasic = (data) => {
                     //tao book tour 
                     // update lai number a cua tour
                     await createNewBookTour(data);
-                    Tour.tour.numPersonA = Tour.tour.numPersonA - (data.numPersonA + numRemaining);
+                    Tour.tour.adultSlot = parseInt(Tour.tour.adultSlot) - (parseInt(data.adultSlot) + parseInt(numRemaining));
+                    console.log(Tour.tour.adultSlot)
                     await tourService.updateTourData(Tour.tour);
                     // tao bill
                     resolve({

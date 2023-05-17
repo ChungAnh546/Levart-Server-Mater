@@ -70,17 +70,17 @@ let delayBookTour = async (id) => {
     await addDelayEventOrder(id, 15);
 }
 let handleBookTour = async (req, res) => {
-    let checkInput = checkValueInput(req.body);
+    // let checkInput = checkValueInput(req.body);
     const time = new Date().getTime();
 
-    if (!checkInput) {
-        return res.status(400).json({
-            code: 400,
-            errCode: 1,
-            errMessage: 'Missing input parameter!',
-            time: time
-        });
-    }
+    // if (!checkInput) {
+    //     return res.status(400).json({
+    //         code: 400,
+    //         errCode: 1,
+    //         errMessage: 'Missing input parameter!',
+    //         time: time
+    //     });
+    // }
 
     let message = await bookTourService.bookTourBasic(req.body);
 

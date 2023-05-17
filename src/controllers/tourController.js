@@ -1,12 +1,12 @@
 import tourService from '../services/tourService';
 let handleCreateTour = async (req, res) => {
-    let checkInput = checkValueInput(req.body);
-    if (!checkInput) {
-        return res.status(500).json({
-            errCode: 1,
-            errMessage: 'Missing input parameter!'
-        });
-    }
+    // let checkInput = checkValueInput(req.body);
+    // if (!checkInput) {
+    //     return res.status(500).json({
+    //         errCode: 1,
+    //         errMessage: 'Missing input parameter!'
+    //     });
+    // }
     let message = await tourService.createNewTour(req.body);
 
     return res.status(message.code).json(message);

@@ -2,7 +2,8 @@ import db from "../models/index";
 import bcrypt from "bcryptjs";
 import OtpGenerator from "otp-generator";
 import mailer from '../utils/mailer';
-import otpService from "./otpService"
+import otpService from "./otpService";
+const jwt = require('jsonwebtoken');
 const salt = bcrypt.genSaltSync(10);
 
 let hashUserPassword = (password) => {
@@ -18,6 +19,71 @@ let hashUserPassword = (password) => {
         } catch (error) {
             reject(error)
         }
+    })
+}
+let handleUserLoginByPhone = (phone, password) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            let isExist = await checkUserPhone(phone);//email có tồn tại
+            let userData = {}
+            if (isExist) {
+                let user = await db.User.findOne({
+                    attributes: ['id', 'phoneNumber', 'roleId', 'password'],//lấy thuộc tính cần thiết
+                    where: {
+
+                        phoneNumber: phone//điều kiện
+                    },
+                    raw: true //chuyển sang dạng object dạng thô 
+                });
+                if (user) {
+                    //check hamf băm
+                    let check = await bcrypt.compareSync(password, user.password);
+                    delete user.password;//xóa thuộc tính pass
+                    if (check) {
+
+                        userData = {
+                            code: 201,
+                            errCode: 0,
+                            errMessage: `Ok`,
+                            user: user
+                        }
+
+                    } else {
+                        userData = {
+                            code: 400,
+                            errCode: 3,
+                            errMessage: `Wrong password`,
+                            user: user
+                        }
+                    }
+
+                } else {
+                    userData = {
+                        code: 404,
+                        errCode: 2,
+                        errMessage: `User's not found`
+
+                    }
+                    resolve(userData)
+                }
+
+            }
+            else {
+                userData = {
+                    code: 400,
+                    errCode: 1,
+                    errMessage: `Your's phone isn't exist is your system, Plz try other phone! `
+
+                };
+                resolve(userData)
+
+            }
+            resolve(userData)
+        } catch (error) {
+            reject(error)
+        }
+
     })
 }
 let handleUserLogin = (email, password) => {
@@ -95,6 +161,7 @@ let compareUserPassword = () => {
         }
     })
 }
+
 let checkUserEmail = (userEmail) => {
 
     return new Promise(async (resolve, reject) => {
@@ -168,6 +235,109 @@ let getAllUsers = (userId) => {
                 errCode: 0,
                 users: users
             })
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
+let getUserByEmail = (email) => {
+
+    return new Promise(async (resolve, reject) => {
+
+        try {
+
+            let users = '';
+
+            if (email && email !== '') {
+                users = await db.User.findOne({
+                    where: { email: email },
+                    attributes: {
+                        exclude: ['password']
+                    }
+                })
+            }
+            resolve({
+                code: 200,
+                errCode: 0,
+                users: users
+            })
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+let getUserByPhone = (phone) => {
+
+    return new Promise(async (resolve, reject) => {
+
+        try {
+
+            let users = '';
+
+            if (phone && phone !== '') {
+                users = await db.User.findOne({
+                    where: { phoneNumber: phone },
+                    attributes: {
+                        exclude: ['password']
+                    }
+                })
+            }
+            resolve({
+                code: 200,
+                errCode: 0,
+                users: users
+            })
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+let createNewUserWhenBookTourByPhone = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            if (!data.phoneNumber) {
+                resolve({
+                    code: 400,
+                    errCode: 1,
+                    errMessage: 'Missing required parameters',
+                })
+
+            }
+
+            let checkPhone = await checkUserPhone(data.phoneNumber);
+            if (checkPhone === true) {
+
+                resolve({
+                    code: 400,
+                    errCode: 2,
+                    errMessage: 'Your email or phone is already in used, Plz try another email ',
+
+
+                })
+            } else {
+                let hashPasswordFromBcrypt = await hashUserPassword(data.password);
+                await db.User.create({
+                    email: data.email,
+                    password: hashPasswordFromBcrypt.hashPassword,
+                    fullName: data.fullName,
+
+                    address: data.address,
+                    phoneNumber: data.phoneNumber,
+                    gender: data.gender === '1' ? true : false,
+                    roleId: data.roleId,
+
+                })
+                resolve({
+                    code: 201,
+                    errCode: 0,
+                    errMessage: '',
+                    message: 'OK',
+
+                })
+            }
+
         } catch (error) {
             reject(error)
         }
@@ -437,10 +607,35 @@ let verifyOtp = (email, otp) => {
                     where: { email: email }
                 })
                 //getAllOtp.destroy();
+                let user = await db.User.findOne({
+                    attributes: ['id', 'email', 'roleId'],//lấy thuộc tính cần thiết
+                    where: {
+
+                        email: email//điều kiện
+                    },
+                    raw: true //chuyển sang dạng object dạng thô 
+                });
+                if (user) {
+
+                    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+                        expiresIn: "360000s"
+
+                    });
+                    resolve({
+                        code: 200,
+                        errCode: 0,
+                        errMessage: 'ok',
+                        user: user,
+                        accessToken: accessToken ? accessToken : null
+
+                    })
+
+                }
+
                 resolve({
                     code: 200,
                     errCode: 0,
-                    errMessage: 'ok',
+                    errMessage: 'ok'
 
                 })
             }
@@ -451,6 +646,7 @@ let verifyOtp = (email, otp) => {
 
 }
 module.exports = {
+    createNewUserWhenBookTourByPhone: createNewUserWhenBookTourByPhone,
     handleUserLogin: handleUserLogin,
     getAllUsers: getAllUsers,
     createNewUser: createNewUser,
@@ -459,5 +655,8 @@ module.exports = {
     verify: verify,
     regisUser: regisUser,
     verifyOtp: verifyOtp,
-    createOtp: createOtp
+    createOtp: createOtp,
+    getUserByPhone: getUserByPhone,
+    getUserByEmail: getUserByEmail,
+    handleUserLoginByPhone: handleUserLoginByPhone
 }

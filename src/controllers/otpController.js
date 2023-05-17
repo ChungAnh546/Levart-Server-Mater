@@ -1,4 +1,6 @@
 import otpService from '../services/otpService';
+import userService from '../services/userService';
+const jwt = require('jsonwebtoken');
 
 
 let handleCreateOtp = async (req, res) => {
@@ -67,8 +69,30 @@ let handelVerifyOTPWithPhone = (req, res) => {
             client.verify.v2
                 .services(verifySid)
                 .verificationChecks.create({ to: "+84" + req.body.phone, code: otpCode })
-                .then((verification_check) => {
-                    console.log(verification_check.status); return res.status(200).json(
+                .then(async (verification_check) => {
+                    console.log(verification_check.status);
+                    if (verification_check.status !== 'pending') {
+                        await userService.getUserByPhone('0' + req.body.phone).then((user) => {
+                            if (user.users) {
+                                const accessToken = jwt.sign(user.users, process.env.ACCESS_TOKEN_SECRET, {
+                                    expiresIn: "360000s"
+
+                                });
+                                return res.status(200).json(
+                                    {
+                                        errCode: 0,
+                                        status: verification_check.status,
+                                        errMessage: "",
+                                        user: user.users,
+                                        accessToken: accessToken ? accessToken : null
+                                    }
+                                );
+                            }
+
+                        });
+
+                    }
+                    return res.status(200).json(
                         {
                             errCode: 0,
                             status: verification_check.status,

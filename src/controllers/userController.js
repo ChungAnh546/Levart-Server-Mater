@@ -46,6 +46,48 @@ let handleLogin = async (req, res) => {
 
 
 }
+let handleLoginByPhone = async (req, res) => {
+
+    let phone = req.body.phoneNumber;
+    let password = req.body.password;
+
+    if (!phone || !password) {
+        return res.status(400).json({
+            code: 400,
+            errCode: 1,
+            errMessage: 'Missing input parameter!'
+
+        })
+    }
+    let userData = await userService.handleUserLoginByPhone(phone, password);
+    //tao jwt
+
+    if (userData.errCode === 0) {
+        const accessToken = jwt.sign(userData.user, process.env.ACCESS_TOKEN_SECRET, {
+            expiresIn: "360000s"
+
+        });
+        return res.status(200).json(
+            {
+                errCode: userData.errCode,
+                errMessage: userData.errMessage,
+                user: userData.user ? userData.user : {},
+                accessToken: accessToken
+            }
+        )
+    }
+
+    return res.status(400).json(
+        {
+            errCode: userData.errCode,
+            errMessage: userData.errMessage,
+            user: userData.user ? userData.user : {},
+            accessToken: null
+        }
+    )
+
+
+}
 let handleGetAllUsers = async (req, res) => {
     let id = req.query.id;//all,id
 
@@ -72,6 +114,79 @@ let handleGetAllUsers = async (req, res) => {
     )
 
 }
+
+let handleGetUserByEmail = async (req, res) => {
+    let email = req.query.email;//all,id
+
+    if (!email) {
+        return res.status(400).json(
+            {
+                code: 400,
+                errCode: 1,
+                errMessage: 'Missing required parameters',
+                user: user
+            }
+        )
+    }
+
+    let user = await userService.getUserByEmail(email);
+    if (user.users) {
+        return res.status(user.code ? user.code : 400).json(
+            {
+
+                errCode: 0,
+                errMessage: 'Ok',
+                user: user.users
+            }
+        )
+    } else {
+        return res.status(user.code ? user.code : 404).json(
+            {
+
+                errCode: 1,
+                errMessage: 'User does not exist',
+                user: user.users
+            })
+    }
+
+
+}
+let handleGetUserByPhone = async (req, res) => {
+    let phone = req.query.phone;//all,id
+
+    if (!phone) {
+        return res.status(400).json(
+            {
+                code: 400,
+                errCode: 1,
+                errMessage: 'Missing required parameters',
+                user: user
+            }
+        )
+    }
+
+    let user = await userService.getUserByPhone(phone);
+    if (user.users) {
+        return res.status(user.code ? user.code : 400).json(
+            {
+
+                errCode: 0,
+                errMessage: 'Ok',
+                user: user.users
+            }
+        )
+    } else {
+        return res.status(user.code ? user.code : 404).json(
+            {
+
+                errCode: 1,
+                errMessage: 'User does not exist',
+                user: user.users
+            })
+    }
+
+
+}
 let handleCreateNewUser = async (req, res) => {
 
     let message = await userService.createNewUser(req.body);
@@ -80,6 +195,15 @@ let handleCreateNewUser = async (req, res) => {
 
 
 }
+let handleCreateNewUserWhenBookTourByPhone = async (req, res) => {
+
+    let message = await userService.createNewUserWhenBookTourByPhone(req.body);
+    return res.status(message.code).json(message);
+
+
+
+}
+
 let hash = (code) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -169,5 +293,9 @@ module.exports = {
     verify: verify,
     regisUserOtp: regisUserOtp,
     verifyOtp: verifyOtp,
-    createOtp: createOtp
+    createOtp: createOtp,
+    handleGetUserByPhone: handleGetUserByPhone,
+    handleGetUserByEmail: handleGetUserByEmail,
+    handleCreateNewUserWhenBookTourByPhone: handleCreateNewUserWhenBookTourByPhone,
+    handleLoginByPhone: handleLoginByPhone
 }
