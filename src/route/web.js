@@ -16,6 +16,7 @@ import otpController from "../controllers/otpController.js";
 import dayDetailController from "../controllers/dayDetailController.js";
 import arrayImageController from "../controllers/arrayImageController.js";
 import vnPayController from "../controllers/vnPayController.js"
+import stripeController from "../controllers/stripeController.js"
 //import { verifyToken } from "../middleware/auth";
 
 let router = express.Router();
@@ -113,6 +114,8 @@ let initWebRoutes = (app) => {
     router.delete('/api/array-image/delete', arrayImageController.handleDeleteArrayImage);
     //Api payment vnpay
     router.post('/create_payment_url', vnPayController.vnPay_Payment);
+    //APi payment stripe visa
+    router.post('/create_payment_stripe', stripeController.stripe_Payment);
     return app.use("/", router);
 }
 
