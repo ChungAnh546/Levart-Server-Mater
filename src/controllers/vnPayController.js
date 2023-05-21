@@ -20,10 +20,10 @@ const vnPay_Payment = (req, res, next) => {
 
         var createDate = dateFormat(date, 'yyyymmddHHmmss');
         var orderId = dateFormat(date, 'HHmmss');
-        var amount = 200000;//req.body.amount;
+        var amount = req.body.amount;
         var bankCode = "";//req.body.bankCode;
 
-        var orderInfo = "Du lịch levart world";//req.body.orderDescription;
+        var orderInfo = req.body.orderDescription;
         var orderType = "billpayment";//req.body.orderType;
         var locale = "vn";//req.body.language;
         if (locale === null || locale === '') {
