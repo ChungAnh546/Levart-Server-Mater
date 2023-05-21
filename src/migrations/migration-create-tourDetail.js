@@ -16,6 +16,9 @@ module.exports = {
             schedule: {
                 type: Sequelize.STRING
             },
+            day: {
+                type: Sequelize.INTEGER
+            },
             tourId: {
                 type: Sequelize.INTEGER
             },

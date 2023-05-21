@@ -8,7 +8,7 @@ const stripe_Payment = async (req, res) => {
         const name = req.body.name;
         const param = req.body.param;
         // const cancel_url = req.body.cancel_url;
-        if (amount && name && param) {
+        if (amount && param) {
             const session = await stripe.checkout.sessions.create(
                 {
                     "mode": "payment",
@@ -17,7 +17,7 @@ const stripe_Payment = async (req, res) => {
                             "unit_amount": amount,
                             "currency": "vnd",
                             "product_data": {
-                                "name": name
+                                "name": "" + name,
                             }
                         },
                         "quantity": "1"
@@ -29,6 +29,7 @@ const stripe_Payment = async (req, res) => {
                     }
                 }
             );
+            res.redirect(session.url);
             return res.status(201).json({
                 errCode: 0,
                 errMessage: "",
