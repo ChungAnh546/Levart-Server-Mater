@@ -6,6 +6,7 @@ let createNewDayDetail = (data) => {
                 title: data.title,
                 schedule: data.schedule,
                 tourId: data.tourId,
+                day: data.day,
 
 
 
@@ -95,7 +96,7 @@ let updateDayDetailData = (data) => {
             if (dayDetail) {
                 dayDetail.title = data.title;
                 dayDetail.schedule = data.schedule;
-
+                dayDetail.day = data.day;
                 await dayDetail.save();
                 resolve({
                     code: 202,
