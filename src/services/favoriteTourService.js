@@ -2,21 +2,38 @@ import db from "../models/index";
 let createNewFavoriteTour = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            await db.FavoriteTour.create({
-                tourId: data.tourId,
-                customerId: data.customerId,
-
-
-
-
+            let getTour = await db.FavoriteTour.findOne({
+                where: {
+                    tourId: data.tourId,
+                    customerId: data.customerId,
+                }
             })
-            resolve({
-                code: 201,
-                errCode: 0,
-                errMessage: '',
-                message: 'OK',
+            if (!getTour) {
+                await db.FavoriteTour.create({
+                    tourId: data.tourId,
+                    customerId: data.customerId,
 
-            })
+
+
+
+                })
+                resolve({
+                    code: 201,
+                    errCode: 0,
+                    errMessage: '',
+                    message: 'OK',
+
+                })
+
+            } else {
+                resolve({
+                    code: 401,
+                    errCode: 1,
+                    errMessage: '',
+                    message: 'coincident',
+
+                })
+            }
 
 
         } catch (error) {
