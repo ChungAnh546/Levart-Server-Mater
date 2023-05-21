@@ -37,7 +37,7 @@ let getFavoriteTour = (id) => {
                 });
             }
             if (id && id !== 'ALL') {
-                favoriteTour = await db.FavoriteTour.findOne({
+                favoriteTour = await db.FavoriteTour.findAll({
                     where: { customerId: id }
 
                 })
