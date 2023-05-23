@@ -3,7 +3,7 @@ import favoriteTourService from "../services/favoriteTourService.js";
 let handleCreateFavoriteTour = async (req, res) => {
 
     let message = await favoriteTourService.createNewFavoriteTour(req.body);
-    console.log(message);
+
 
     return res.status(message.code).json(message);
 

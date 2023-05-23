@@ -52,6 +52,8 @@ let initWebRoutes = (app) => {
     router.get('/api/get-all-bookTour', bookTourController.handleGetAllBookTour);
     router.delete('/api/delete-bookTour', bookTourController.handleDeleteBookTour);
     router.post('/api/bookTour/book', bookTourController.handleBookTour);
+    router.get('/api/bookTour/get-by-customerId', bookTourController.handleGetBookTourByCustomerId);
+    router.put('/api/bookTour/cancellation', bookTourController.handleCancellationBookTour);
 
     //Api hotel 
     router.post('/api/create-new-hotel', hotelController.handleCreateHotel);

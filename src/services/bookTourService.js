@@ -156,7 +156,47 @@ let updateBookTourData = (data) => {
     })
 
 }
+let cancellationBookTour = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!data.id) {
+                resolve({
+                    code: 400,
+                    errCode: 1,
+                    Message: 'Missing required parameters!'
+                })
+            }
+            let bookTour = await db.BookTour.findOne({
+                where: { id: data.id }, raw: false
+            })
+            //update tour
+            let tourData = await db.Tour.findOne({
+                where: { id: bookTour.tourId }, raw: false
+            })
+            if (tourData && bookTour) {
+                tourData.adultSlot = parseInt(tourData.adultSlot) + parseInt(bookTour.adultSlot);
+                tourData.childrenSlot = parseInt(tourData.childrenSlot) + parseInt(bookTour.childrenSlot);
+                await tourData.save();
+                bookTour.state = 'S4';
+                await bookTour.save();
+                resolve({
+                    code: 202,
+                    errCode: 0,
+                    Message: 'Update the bookTour succeeds!'
+                })
+            } else {
+                resolve({
+                    code: 404,
+                    errCode: 2,
+                    Message: `bookTour's not found!`
+                })
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
 
+}
 let getBookTour = (bookTourId) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -167,6 +207,44 @@ let getBookTour = (bookTourId) => {
             if (bookTourId && bookTourId !== 'ALL') {
                 bookTour = await db.BookTour.findOne({
                     where: { id: bookTourId }
+                })
+            }
+
+
+            if (bookTour !== null) {
+                resolve({
+                    code: 200,
+                    errCode: 0,
+                    Message: '',
+                    bookTour: bookTour
+                })
+            } else {
+                resolve({
+                    code: 400,
+                    errCode: 1,
+                    Message: 'fail',
+                    bookTour: bookTour
+                })
+            }
+
+        } catch (error) {
+
+            resolve({
+                code: 400,
+                errCode: 1,
+                Message: 'fail',
+
+            })
+        }
+    })
+}
+let getBookTourByCustomerId = (customerId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let bookTour = '';
+            if (customerId && customerId !== '') {
+                bookTour = await db.BookTour.findAll({
+                    where: { customerId: customerId }
                 })
             }
 
@@ -222,6 +300,7 @@ let deleteBookTour = (bookTourId) => {
 
     })
 }
+
 let bookTourBasic = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -283,5 +362,7 @@ module.exports = {
     getBookTour: getBookTour,
     deleteBookTour: deleteBookTour,
     bookTour: bookTour,
-    bookTourBasic: bookTourBasic
+    bookTourBasic: bookTourBasic,
+    getBookTourByCustomerId: getBookTourByCustomerId,
+    cancellationBookTour: cancellationBookTour
 }
