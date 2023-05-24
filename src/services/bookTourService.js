@@ -105,14 +105,16 @@ let createNewBookTour = (data) => {
                 paymentId: data.paymentId,
                 state: data.state,
                 note: data.note,
+            }).then((data) => {
+                resolve({
+                    code: 201,
+                    errCode: 0,
+                    errMessage: '',
+                    message: 'OK',
+                    bookTourId: data.id
+                })
             })
-            resolve({
-                code: 201,
-                errCode: 0,
-                errMessage: '',
-                message: 'OK',
-                time: time
-            })
+
         } catch (error) {
             reject(error)
         }
@@ -156,6 +158,50 @@ let updateBookTourData = (data) => {
     })
 
 }
+let updateStateBookTourData = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!data.tourId || !data.customerId) {
+                resolve({
+                    code: 400,
+                    errCode: 1,
+                    Message: 'Missing required parameters!'
+                })
+            }
+            let bookTour = await db.BookTour.findOne({
+                where: {
+                    tourId: data.tourId,
+                    customerId: data.customerId,
+                    paymentId: data.paymentId,
+                    state: 'S1'
+                }, raw: false
+            })
+            if (bookTour) {
+                bookTour.state = data.state;
+
+                await bookTour.save();
+                resolve({
+                    code: 202,
+                    errCode: 0,
+                    Message: 'Update the bookTour succeeds!',
+                    bookTourId: bookTour.id
+
+                })
+
+
+            } else {
+                resolve({
+                    code: 404,
+                    errCode: 2,
+                    Message: `bookTour's not found!`
+                })
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+
+}
 let cancellationBookTour = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -170,27 +216,36 @@ let cancellationBookTour = (data) => {
                 where: { id: data.id }, raw: false
             })
             //update tour
-            let tourData = await db.Tour.findOne({
-                where: { id: bookTour.tourId }, raw: false
-            })
-            if (tourData && bookTour) {
-                tourData.adultSlot = parseInt(tourData.adultSlot) + parseInt(bookTour.adultSlot);
-                tourData.childrenSlot = parseInt(tourData.childrenSlot) + parseInt(bookTour.childrenSlot);
-                await tourData.save();
-                bookTour.state = 'S4';
-                await bookTour.save();
-                resolve({
-                    code: 202,
-                    errCode: 0,
-                    Message: 'Update the bookTour succeeds!'
+            if (bookTour.state !== 'S4') {
+                let tourData = await db.Tour.findOne({
+                    where: { id: bookTour.tourId }, raw: false
                 })
+                if (tourData && bookTour) {
+                    tourData.adultSlot = parseInt(tourData.adultSlot) + parseInt(bookTour.adultSlot);
+                    tourData.childrenSlot = parseInt(tourData.childrenSlot) + parseInt(bookTour.childrenSlot);
+                    await tourData.save();
+                    bookTour.state = 'S4';
+                    await bookTour.save();
+                    resolve({
+                        code: 202,
+                        errCode: 0,
+                        Message: 'Update the bookTour succeeds!'
+                    })
+                } else {
+                    resolve({
+                        code: 404,
+                        errCode: 2,
+                        Message: `bookTour's not found!`
+                    })
+                }
             } else {
                 resolve({
                     code: 404,
-                    errCode: 2,
-                    Message: `bookTour's not found!`
+                    errCode: 3,
+                    Message: `bookTour's have cancellation!`
                 })
             }
+
         } catch (error) {
             reject(error)
         }
@@ -208,6 +263,57 @@ let getBookTour = (bookTourId) => {
                 bookTour = await db.BookTour.findOne({
                     where: { id: bookTourId }
                 })
+            }
+
+
+            if (bookTour !== null) {
+                resolve({
+                    code: 200,
+                    errCode: 0,
+                    Message: '',
+                    bookTour: bookTour
+                })
+            } else {
+                resolve({
+                    code: 400,
+                    errCode: 1,
+                    Message: 'fail',
+                    bookTour: bookTour
+                })
+            }
+
+        } catch (error) {
+
+            resolve({
+                code: 400,
+                errCode: 1,
+                Message: 'fail',
+
+            })
+        }
+    })
+}
+let getBookTourByTourId = (tourId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let bookTour = '';
+            if (tourId && tourId !== '') {
+                bookTour = await db.BookTour.findAll({
+                    where: { tourId: tourId }
+                })
+                for (let index = 0; index < bookTour.length; index++) {
+                    const element = bookTour[index];
+                    bookTour[index].dataTour = await db.Tour.findOne({
+                        where: {
+                            id: element.tourId
+                        }
+                    })
+                    bookTour[index].dataCustomer = await db.User.findOne({
+                        where: {
+                            id: element.customerId
+                        }
+                    })
+                }
             }
 
 
@@ -327,7 +433,7 @@ let bookTourBasic = (data) => {
                 } else {
                     //tao book tour 
                     // update lai number a cua tour
-                    await createNewBookTour(data);
+                    let newBookTour = await createNewBookTour(data);
                     Tour.tour.adultSlot = parseInt(Tour.tour.adultSlot) - (parseInt(data.adultSlot) + parseInt(numRemaining));
                     console.log(Tour.tour.adultSlot)
                     await tourService.updateTourData(Tour.tour);
@@ -337,6 +443,7 @@ let bookTourBasic = (data) => {
                         errCode: 0,
                         errMessage: '',
                         message: 'OK',
+                        bookTourId: newBookTour.bookTourId
 
                     })
 
@@ -364,5 +471,7 @@ module.exports = {
     bookTour: bookTour,
     bookTourBasic: bookTourBasic,
     getBookTourByCustomerId: getBookTourByCustomerId,
-    cancellationBookTour: cancellationBookTour
+    cancellationBookTour: cancellationBookTour,
+    updateStateBookTourData: updateStateBookTourData,
+    getBookTourByTourId: getBookTourByTourId
 }

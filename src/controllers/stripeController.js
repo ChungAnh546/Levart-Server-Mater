@@ -7,6 +7,7 @@ const stripe_Payment = async (req, res) => {
         const amount = req.body.amount;
         const name = req.body.name;
         const param = req.body.param;
+        const bookTourId = req.body.bookTourId;
         // const cancel_url = req.body.cancel_url;
         if (amount && param) {
             const session = await stripe.checkout.sessions.create(
@@ -22,8 +23,8 @@ const stripe_Payment = async (req, res) => {
                         },
                         "quantity": "1"
                     }],
-                    "cancel_url": "http://localhost:3000/payment/" + param,
-                    "success_url": "http://localhost:3000/payment/" + param,
+                    "cancel_url": "http://localhost:3000/payment/" + param + "?payment=fail;&tourId=" + param,
+                    "success_url": "http://localhost:3000/payment/" + param + "?payment=success&tourId=" + param + "&amount=" + amount,
                     "payment_method_types": {
                         "0": "card"
                     }

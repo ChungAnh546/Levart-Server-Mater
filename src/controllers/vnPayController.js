@@ -14,12 +14,12 @@ const vnPay_Payment = (req, res, next) => {
         var tmnCode = 'KFXXYZ3X';
         var secretKey = 'JJOENCOSZYKDXLZXTCVNAJZHFTXILJKG';
         var vnpUrl = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
-        var returnUrl = 'http://localhost:3000/payment/1';
+        var returnUrl = 'http://localhost:3000/payment/' + req.body.param;
 
         var date = new Date();
 
         var createDate = dateFormat(date, 'yyyymmddHHmmss');
-        var orderId = dateFormat(date, 'HHmmss');
+        var orderId = req.body.param;
         var amount = req.body.amount;
         var bankCode = "";//req.body.bankCode;
 

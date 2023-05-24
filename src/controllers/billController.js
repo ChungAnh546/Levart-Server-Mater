@@ -20,7 +20,7 @@ let handleCreateNewBill = async (req, res) => {
 }
 let checkValueInput = (data) => {
     let isValid = true;
-    let arrInput = ['bookTourId', 'customerId', 'creatorId', 'totalCost']
+    let arrInput = ['bookTourId', 'customerId', 'totalCost']
     for (let i = 0; i < arrInput.length; i++) {
         if (!data[arrInput[i]]) {
             isValid = false;

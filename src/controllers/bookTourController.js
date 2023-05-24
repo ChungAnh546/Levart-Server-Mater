@@ -37,6 +37,15 @@ let handleEditBookTour = async (req, res) => {
 
 
 }
+let handleEditStateBookTour = async (req, res) => {
+    let data = req.body;
+
+    let message = await bookTourService.updateStateBookTourData(data);
+
+    return res.status(message.code).json(message);
+
+
+}
 let handleCancellationBookTour = async (req, res) => {
     let data = req.body;
 
@@ -60,6 +69,35 @@ let handleGetAllBookTour = async (req, res) => {
         )
     }
     let bookTour = await bookTourService.getBookTour(id);
+    if (bookTour.code === 400) {
+        return res.status(bookTour.code).json({
+            errCode: 1,
+            errMessage: 'fail',
+            bookTour: bookTour.bookTour
+        })
+    } else {
+        return res.status(bookTour.code).json({
+            errCode: 0,
+            errMessage: '',
+            bookTour: bookTour.bookTour
+        })
+    }
+
+
+}
+let handleGetBookTourByTourId = async (req, res) => {
+    let id = req.query.tourId;
+    if (!id) {
+        return res.status(400).json(
+            {
+                code: 400,
+                errCode: 1,
+                errMessage: 'Missing required parameters',
+
+            }
+        )
+    }
+    let bookTour = await bookTourService.getBookTourByTourId(id);
     if (bookTour.code === 400) {
         return res.status(bookTour.code).json({
             errCode: 1,
@@ -149,6 +187,8 @@ module.exports = {
     handleDeleteBookTour: handleDeleteBookTour,
     handleBookTour: handleBookTour,
     handleGetBookTourByCustomerId: handleGetBookTourByCustomerId,
-    handleCancellationBookTour: handleCancellationBookTour
+    handleCancellationBookTour: handleCancellationBookTour,
+    handleEditStateBookTour: handleEditStateBookTour,
+    handleGetBookTourByTourId: handleGetBookTourByTourId
 
 }
