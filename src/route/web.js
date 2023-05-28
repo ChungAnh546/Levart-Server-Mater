@@ -16,8 +16,9 @@ import otpController from "../controllers/otpController.js";
 import dayDetailController from "../controllers/dayDetailController.js";
 import arrayImageController from "../controllers/arrayImageController.js";
 import favoriteTourController from "../controllers/favoriteTourController.js";
-import vnPayController from "../controllers/vnPayController.js"
-import stripeController from "../controllers/stripeController.js"
+import vnPayController from "../controllers/vnPayController.js";
+import stripeController from "../controllers/stripeController.js";
+import sendMailController from "../controllers/sendMailController.js";
 //import { verifyToken } from "../middleware/auth";
 
 let router = express.Router();
@@ -122,7 +123,8 @@ let initWebRoutes = (app) => {
     router.get('/api/favorite-tour/get-by-customerId', favoriteTourController.handleGetFavoriteTour);
     // chuyeen tourId customerId 
     router.delete('/api/favorite-tour/delete', favoriteTourController.handleDeleteFavoriteTour);
-
+    //api send mail
+    router.post('/api/send-mail/bookTour', sendMailController.hashSendGmailBookTour);
     //Api payment vnpay
     router.post('/create_payment_url', vnPayController.vnPay_Payment);
     //APi payment stripe visa

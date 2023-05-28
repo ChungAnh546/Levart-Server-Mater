@@ -23,7 +23,7 @@ const stripe_Payment = async (req, res) => {
                         },
                         "quantity": "1"
                     }],
-                    "cancel_url": "http://localhost:3000/payment/" + param + "?payment=fail;&tourId=" + param,
+                    "cancel_url": "http://localhost:3000/payment/" + param + "?payment=fail&tourId=" + param,
                     "success_url": "http://localhost:3000/payment/" + param + "?payment=success&tourId=" + param + "&amount=" + amount,
                     "payment_method_types": {
                         "0": "card"
@@ -45,7 +45,7 @@ const stripe_Payment = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return res.status(400).json({
             errCode: 1,
             errMessage: "fail",

@@ -14,7 +14,7 @@ module.exports = {
                 type: Sequelize.STRING
             },
             schedule: {
-                type: Sequelize.STRING
+                type: Sequelize.TEXT
             },
             day: {
                 type: Sequelize.INTEGER
