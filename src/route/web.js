@@ -124,6 +124,7 @@ let initWebRoutes = (app) => {
     // chuyeen tourId customerId 
     router.delete('/api/favorite-tour/delete', favoriteTourController.handleDeleteFavoriteTour);
     //api send mail
+    router.post('/api/send-mail/bookTourByMoney', sendMailController.handleSendGmailBookTourByMoney);
     router.post('/api/send-mail/bookTour', sendMailController.hashSendGmailBookTour);
     //Api payment vnpay
     router.post('/create_payment_url', vnPayController.vnPay_Payment);

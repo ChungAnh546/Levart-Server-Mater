@@ -70,7 +70,7 @@ let handelVerifyOTPWithPhone = (req, res) => {
                 .services(verifySid)
                 .verificationChecks.create({ to: "+84" + req.body.phone, code: otpCode })
                 .then(async (verification_check) => {
-                    console.log(verification_check.status);
+                    //console.log(verification_check.status);
                     if (verification_check.status !== 'pending') {
                         await userService.getUserByPhone('0' + req.body.phone).then((user) => {
                             if (user.users) {

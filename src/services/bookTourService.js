@@ -100,6 +100,7 @@ let createNewBookTour = (data) => {
                 customerId: data.customerId,
                 adultSlot: data.adultSlot,
                 childrenSlot: data.childrenSlot,
+                babySlot: data.babySlot,
                 date: data.date,
                 type: data.type,
                 paymentId: data.paymentId,
@@ -136,6 +137,7 @@ let updateBookTourData = (data) => {
             if (bookTour) {
                 bookTour.adultSlot = data.adultSlot;
                 bookTour.childrenSlot = data.childrenSlot;
+                bookTour.babySlot = data.babySlot;
                 bookTour.note = data.note;
                 await bookTour.save();
                 resolve({
@@ -258,14 +260,46 @@ let getBookTour = (bookTourId) => {
             let bookTour = '';
             if (bookTourId && bookTourId === 'ALL') {
                 bookTour = await db.BookTour.findAll();
+                for (let index = 0; index < bookTour.length; index++) {
+                    const element = bookTour[index];
+                    bookTour[index].dataTour = await db.Tour.findOne({
+                        where: {
+                            id: element.tourId
+                        },
+                        attributes: {
+                            exclude: ['image']
+                        }
+                    })
+                    bookTour[index].dataCustomer = await db.User.findOne({
+                        where: {
+                            id: element.customerId
+                        }
+                    })
+                }
             }
             if (bookTourId && bookTourId !== 'ALL') {
                 bookTour = await db.BookTour.findOne({
                     where: { id: bookTourId }
                 })
+
+                const element = bookTour;
+                bookTour.dataTour = await db.Tour.findOne({
+                    where: {
+                        id: element.tourId
+                    },
+                    attributes: {
+                        exclude: ['image']
+                    }
+                })
+                bookTour.dataCustomer = await db.User.findOne({
+                    where: {
+                        id: element.customerId
+                    }
+                })
+
             }
 
-
+            // console.log(bookTour);
             if (bookTour !== null) {
                 resolve({
                     code: 200,
@@ -273,17 +307,17 @@ let getBookTour = (bookTourId) => {
                     Message: '',
                     bookTour: bookTour
                 })
-            } else {
-                resolve({
-                    code: 400,
-                    errCode: 1,
-                    Message: 'fail',
-                    bookTour: bookTour
-                })
             }
+            resolve({
+                code: 400,
+                errCode: 1,
+                Message: 'fail',
+                bookTour: bookTour
+            })
+
 
         } catch (error) {
-
+            console.log(error);
             resolve({
                 code: 400,
                 errCode: 1,

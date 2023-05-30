@@ -19,7 +19,7 @@ const vnPay_Payment = (req, res, next) => {
         var date = new Date();
 
         var createDate = dateFormat(date, 'yyyymmddHHmmss');
-        var orderId = req.body.param;
+        var orderId = dateFormat(date, 'yyyymmddHHmmss');
         var amount = req.body.amount;
         var bankCode = "";//req.body.bankCode;
 
@@ -29,12 +29,13 @@ const vnPay_Payment = (req, res, next) => {
         if (locale === null || locale === '') {
             locale = 'vn';
         }
+        //console.log(ipAddr);
         var currCode = 'VND';
         var vnp_Params = {};
         vnp_Params['vnp_Version'] = '2.1.0';
         vnp_Params['vnp_Command'] = 'pay';
         vnp_Params['vnp_TmnCode'] = tmnCode;
-        // vnp_Params['vnp_Merchant'] = ''
+        //vnp_Params['vnp_Merchant'] = '';
         vnp_Params['vnp_Locale'] = locale;
         vnp_Params['vnp_CurrCode'] = currCode;
         vnp_Params['vnp_TxnRef'] = orderId;
