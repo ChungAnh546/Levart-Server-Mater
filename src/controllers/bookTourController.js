@@ -16,6 +16,16 @@ let handleCreateBookTour = async (req, res) => {
 
 
 }
+let handlePaymentConfirmation = async (req, res) => {
+
+
+    let message = await bookTourService.paymentConfirmation(req.body);
+
+    return res.status(message.code).json(message);
+
+
+}
+
 let checkValueInput = (data) => {
     let isValid = true;
     let arrInput = ['tourId', 'customerId', 'paymentId']
@@ -189,6 +199,7 @@ module.exports = {
     handleGetBookTourByCustomerId: handleGetBookTourByCustomerId,
     handleCancellationBookTour: handleCancellationBookTour,
     handleEditStateBookTour: handleEditStateBookTour,
-    handleGetBookTourByTourId: handleGetBookTourByTourId
+    handleGetBookTourByTourId: handleGetBookTourByTourId,
+    handlePaymentConfirmation: handlePaymentConfirmation
 
 }

@@ -1,4 +1,6 @@
 import db from "../models/index";
+import billService from "./billService";
+import sendMailService from "./sendMailService";
 import tourService from "../services/tourService";
 import userService from "../services/userService";
 const { set, get, setnx, incrby, exists } = require('../config/config.redis');
@@ -160,6 +162,82 @@ let updateBookTourData = (data) => {
     })
 
 }
+let paymentConfirmation = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!data.confirm || !data.id || !data.creatorId) {
+                resolve({
+                    code: 400,
+                    errCode: 1,
+                    Message: 'Missing required parameters!'
+                })
+            }
+            let bookTour = await db.BookTour.findOne({
+                where: { id: data.id }, raw: false
+            })
+            if (bookTour) {
+                if (data.confirm === 'success') {
+                    //nhanhs success
+                    let dataTour = await db.Tour.findOne({
+                        where: { id: bookTour.tourId }, raw: false
+                    })
+                    bookTour.state = "S3";
+                    await bookTour.save();
+                    await billService.createNewBill({
+                        bookTourId: data.id,
+                        customerId: bookTour.customerId,
+                        creatorId: data.creatorId,
+                        totalCost: dataTour.adultPrice * bookTour.adultSlot + dataTour.childPrice * bookTour.childrenSlot + dataTour.babyPrice * bookTour.babySlot,
+                        bookTourDate: '' + new Date(),
+                        promotionCode: null,
+                        status: 'S3'
+                    }).then(async () => {
+                        await sendMailService.handleSendGmailBookTour({
+                            customerId: bookTour.customerId,
+                            bookTourId: data.id
+                        })
+                    })
+                    resolve({
+                        code: 202,
+                        errCode: 0,
+                        Message: 'Update the bookTour succeeds!'
+                    })
+
+                } else {
+                    if (data.confirm === 'cancel') {
+                        //nhanh canel
+                        cancellationBookTour({
+                            id: data.id
+                        })
+                        resolve({
+                            code: 202,
+                            errCode: 0,
+                            Message: 'bookTour cancel!'
+                        })
+                    } else {
+                        resolve({
+                            code: 400,
+                            errCode: 1,
+                            Message: 'success or cancel!'
+                        })
+                    }
+                }
+
+
+            } else {
+                resolve({
+                    code: 404,
+                    errCode: 2,
+                    Message: `bookTour's not found!`
+                })
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+
+}
+
 let updateStateBookTourData = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -507,5 +585,6 @@ module.exports = {
     getBookTourByCustomerId: getBookTourByCustomerId,
     cancellationBookTour: cancellationBookTour,
     updateStateBookTourData: updateStateBookTourData,
-    getBookTourByTourId: getBookTourByTourId
+    getBookTourByTourId: getBookTourByTourId,
+    paymentConfirmation: paymentConfirmation
 }

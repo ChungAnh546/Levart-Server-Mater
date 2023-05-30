@@ -48,6 +48,7 @@ let initWebRoutes = (app) => {
     router.get('/api/get-all-bill', billController.handleGetAllBill);
     //http://localhost:8080/api/get-all-bill?id=All
     //Api bookTour
+    router.post('/api/bookTour/payment-confirmation', bookTourController.handlePaymentConfirmation);
     router.post('/api/create-new-bookTour', bookTourController.handleCreateBookTour);
     router.put('/api/edit-bookTour', bookTourController.handleEditBookTour);
     router.get('/api/get-all-bookTour', bookTourController.handleGetAllBookTour);
