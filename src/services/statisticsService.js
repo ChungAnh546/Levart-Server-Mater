@@ -5,10 +5,10 @@ let totalBillOfDate = async (date) => {
     let totalBill = 0;
     for (let index = 0; index < dataBill.length; index++) {
         const element = dataBill[index];
-
+        const dateStatistics = moment(date, "DD/MM/YYYY");
         const dateBill = moment(element.createdAt, "DD/MM/YYYY");
-        console.log(date + '_' + dateBill);
-        if (dateBill.isSame(date)) {
+        // console.log(date + '_' + dateBill);
+        if (dateBill.isSame(dateStatistics)) {
             totalBill = totalBill + element.totalCost;
         }
     }
