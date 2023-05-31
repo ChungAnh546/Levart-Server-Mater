@@ -194,8 +194,6 @@ let getTourByNameAndPrice = (name, price) => {
                                 [Op.lt]: price
                             }
 
-                        }, attributes: {
-                            exclude: ['image']
                         }
                     })
                 } else {
@@ -208,8 +206,6 @@ let getTourByNameAndPrice = (name, price) => {
                                     [Op.like]: '%' + name + '%'
                                 }
 
-                            }, attributes: {
-                                exclude: ['image']
                             }
                         })
                     } else {
@@ -220,8 +216,6 @@ let getTourByNameAndPrice = (name, price) => {
                                         [Op.lt]: price
                                     }
 
-                                }, attributes: {
-                                    exclude: ['image']
                                 }
                             })
                         }
@@ -230,9 +224,7 @@ let getTourByNameAndPrice = (name, price) => {
 
             } else {
                 tour = await db.Tour.findAll({
-                    attributes: {
-                        exclude: ['image']
-                    }
+
                 })
             }
 
