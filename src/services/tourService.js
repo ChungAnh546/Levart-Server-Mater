@@ -1,5 +1,8 @@
+import { error } from "jquery";
+
 import db from "../models/index";
 import destinationService from "./destinationService";
+const { Op } = require('sequelize');
 let createNewTour = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -124,7 +127,7 @@ let getAllTour = (tourId) => {
                     tour[index].tourDetailData = await db.TourDetails.findAll({
                         where: {
                             tourId: element.id
-                        }, attributes: ['title', 'schedule', 'tourId']
+                        }
                     });
                     tour[index].imageData = await db.ArrayImage.findAll({
                         where: {
@@ -148,7 +151,7 @@ let getAllTour = (tourId) => {
                 tour.tourDetailData = await db.TourDetails.findAll({
                     where: {
                         tourId: tourId
-                    }, attributes: ['title', 'schedule', 'tourId']
+                    }
                 });
                 tour.imageData = await db.ArrayImage.findAll({
                     where: {
@@ -160,6 +163,72 @@ let getAllTour = (tourId) => {
             // console.log("country", await getTourByCountry("Viet Nam"));
             // console.log("region", await getTourByRegion("Mien Nam"));
             // console.log("address", await getTourByAddress("Ca Mau"));
+
+            resolve({
+                code: 200,
+                errCode: 0,
+                Message: '',
+                tour: tour
+            })
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+let getTourByNameAndPrice = (name, price) => {
+
+    return new Promise(async (resolve, reject) => {
+
+        try {
+
+            let tour = '';
+
+            if (name || price) {
+                if (name && price) {
+                    tour = await db.Tour.findAll({
+                        where: {
+                            placeDest: {
+                                [Op.like]: '%' + name + '%'
+                            },
+                            adultPrice: {
+                                [Op.lt]: price
+                            }
+
+                        }, attributes: {
+                            exclude: ['image']
+                        }
+                    })
+                } else {
+
+
+                    if (name) {
+                        tour = await db.Tour.findAll({
+                            where: {
+                                placeDest: {
+                                    [Op.like]: '%' + name + '%'
+                                }
+
+                            }, attributes: {
+                                exclude: ['image']
+                            }
+                        })
+                    } else {
+                        if (price) {
+                            tour = await db.Tour.findAll({
+                                where: {
+                                    adultPrice: {
+                                        [Op.lt]: price
+                                    }
+
+                                }, attributes: {
+                                    exclude: ['image']
+                                }
+                            })
+                        }
+                    }
+                }
+
+            }
 
             resolve({
                 code: 200,
@@ -255,7 +324,7 @@ let getTourByCountry = (Country) => {
                             tour[index].tourDetailData = await db.TourDetails.findAll({
                                 where: {
                                     tourId: element.id
-                                }, attributes: ['title', 'schedule', 'tourId']
+                                }
                             });
                             tour[index].imageData = await db.ArrayImage.findAll({
                                 where: {
@@ -304,7 +373,7 @@ let getTourByRegion = (Region) => {
                             tour[index].tourDetailData = await db.TourDetails.findAll({
                                 where: {
                                     tourId: element.id
-                                }, attributes: ['title', 'schedule', 'tourId']
+                                }
                             });
                             tour[index].imageData = await db.ArrayImage.findAll({
                                 where: {
@@ -353,7 +422,7 @@ let getTourByAddress = (Address) => {
                             tour[index].tourDetailData = await db.TourDetails.findAll({
                                 where: {
                                     tourId: element.id
-                                }, attributes: ['title', 'schedule', 'tourId']
+                                }
                             });
                             tour[index].imageData = await db.ArrayImage.findAll({
                                 where: {
@@ -411,6 +480,7 @@ module.exports = {
     getTourByContinent: getTourByContinent,
     getTourByCountry: getTourByCountry,
     getTourByAddress: getTourByAddress,
-    getTourByRegion: getTourByRegion
+    getTourByRegion: getTourByRegion,
+    getTourByNameAndPrice: getTourByNameAndPrice
 
 }

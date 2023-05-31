@@ -58,6 +58,31 @@ let handleGetAllTour = async (req, res) => {
     )
 
 }
+let handleSearchTourByPlaceDestAndPrice = async (req, res) => {
+    let placeDest = req.query.placeDest;//all,id
+    let price = req.query.price;
+    if (!placeDest && !price) {
+        return res.status(400).json(
+            {
+                code: 400,
+                errCode: 1,
+                errMessage: 'Missing required parameters',
+
+            }
+        )
+    }
+
+    let tour = await tourService.getTourByNameAndPrice(placeDest, price);
+
+    return res.status(tour.code).json(
+        {
+            errCode: 0,
+            errMessage: 'Ok',
+            tour: tour.tour
+        }
+    )
+
+}
 let handleDeleteTour = async (req, res) => {
     if (!req.body.id) {
         return res.status(400).json({
@@ -126,5 +151,6 @@ module.exports = {
     handleGetAllTour: handleGetAllTour,
     handleDeleteTour: handleDeleteTour,
     handelGetTourByRegion: handelGetTourByRegion,
-    handelGetTourByContinent: handelGetTourByContinent
+    handelGetTourByContinent: handelGetTourByContinent,
+    handleSearchTourByPlaceDestAndPrice: handleSearchTourByPlaceDestAndPrice
 }

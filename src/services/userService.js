@@ -588,10 +588,10 @@ let verifyOtp = (email, otp) => {
                 const element = getAllOtp[index].otp;
                 isValid = await otpService.validOtp(otp, element);
                 if (isValid.isValid) { break; }
-                console.log(isValid.isValid);
+                //console.log(isValid.isValid);
 
             }
-            console.log(getAllOtp);
+            // console.log(getAllOtp);
             if (!isValid.isValid) {
                 resolve({
                     code: 400,

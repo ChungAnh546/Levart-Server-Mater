@@ -19,7 +19,7 @@ const vnPay_Payment = (req, res, next) => {
         var date = new Date();
 
         var createDate = dateFormat(date, 'yyyymmddHHmmss');
-        var orderId = dateFormat(date, 'yyyymmddHHmmss');
+        var orderId = parseInt(dateFormat(date, 'yyyymmddHHmmss')) + 9999;
         var amount = req.body.amount;
         var bankCode = "";//req.body.bankCode;
 
@@ -54,7 +54,7 @@ const vnPay_Payment = (req, res, next) => {
         var querystring = require('qs');
         var signData = querystring.stringify(vnp_Params, { encode: false });
         var crypto = require("crypto");
-        var hmac = crypto.createHmac("sha512", secretKey);
+        var hmac = crypto.createHmac("sha512", secretKey);//sha512....256sha 
         var signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");
         vnp_Params['vnp_SecureHash'] = signed;
         vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });

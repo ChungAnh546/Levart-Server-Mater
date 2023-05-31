@@ -80,6 +80,7 @@ let initWebRoutes = (app) => {
     router.post('/api/create-new-tour', tourController.handleCreateTour);
     router.put('/api/edit-tour', tourController.handleEditTour);
     router.get('/api/get-all-tour', tourController.handleGetAllTour);
+    router.get('/api/tour/search', tourController.handleSearchTourByPlaceDestAndPrice);
     router.delete('/api/delete-tour', tourController.handleDeleteTour);
     router.get('/api/get-tour-region', tourController.handelGetTourByRegion);
     router.get('/api/get-tour-continent', tourController.handelGetTourByContinent);
@@ -125,6 +126,7 @@ let initWebRoutes = (app) => {
     // chuyeen tourId customerId 
     router.delete('/api/favorite-tour/delete', favoriteTourController.handleDeleteFavoriteTour);
     //api send mail
+
     router.post('/api/send-mail/bookTourByMoney', sendMailController.handleSendGmailBookTourByMoney);
     router.post('/api/send-mail/bookTour', sendMailController.hashSendGmailBookTour);
     //Api payment vnpay
