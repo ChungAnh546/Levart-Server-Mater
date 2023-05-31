@@ -1,6 +1,7 @@
 import vnPayService from "../services/vnPayService.js";
+import { Buffer } from "buffer";
 const moment = require('moment');
-const vnPay_Payment = (req, res, next) => {
+const vnPay_Payment = async (req, res, next) => {
     try {
         var ipAddr = req.headers['x-forwarded-for'] ||
             req.connection.remoteAddress ||
@@ -19,7 +20,7 @@ const vnPay_Payment = (req, res, next) => {
         var date = new Date();
 
         var createDate = dateFormat(date, 'yyyymmddHHmmss');
-        var orderId = parseInt(dateFormat(date, 'yyyymmddHHmmss')) + 9999;
+        var orderId = dateFormat(date, 'yyyymmddHHmmsss');
         var amount = req.body.amount;
         var bankCode = "";//req.body.bankCode;
 
@@ -55,7 +56,7 @@ const vnPay_Payment = (req, res, next) => {
         var signData = querystring.stringify(vnp_Params, { encode: false });
         var crypto = require("crypto");
         var hmac = crypto.createHmac("sha512", secretKey);//sha512....256sha 
-        var signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");
+        var signed = hmac.update(Buffer.from(signData, 'utf-8')).digest("hex");
         vnp_Params['vnp_SecureHash'] = signed;
         vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
 

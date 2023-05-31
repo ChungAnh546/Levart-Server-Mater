@@ -42,10 +42,10 @@ let handleSendGmailBookTour = (data) => {
                   
                   <div >Ngày đi: ${dataTour.dateGo}    | Ngày về: ${dataTour.dateBack}</div>
                   <div >Nơi khởi hành: ${dataTour.placeGo}   |  Nơi đến: ${dataTour.placeDest}</div>
-                  <div >Giá vé người lớn: ${dataTour.adultPrice}    | Số chỗ người lớn: ${dataBookTour.adultSlot}</div>
-                  <div >Giá vé trẻ em: ${dataTour.childPrice}    | Số chỗ trẻ em: ${dataBookTour.childrenSlot ? dataBookTour.childrenSlot : 0}</div>
-                  <div >Giá vé trẻ sơ sinh: ${dataTour.babyPrice}  |   Số chỗ trẻ sơ sinh: ${dataBookTour.babySlot ? dataBookTour.babySlot : 0}</div>
-                  <div style="text-align: right;">Tổng tiền: ${dataBill.totalCost}</div>
+                  <div >Giá vé người lớn: ${dataTour.adultPrice}  ₫  | Số chỗ người lớn: ${dataBookTour.adultSlot}</div>
+                  <div >Giá vé trẻ em: ${dataTour.childPrice}  ₫  | Số chỗ trẻ em: ${dataBookTour.childrenSlot ? dataBookTour.childrenSlot : 0}</div>
+                  <div >Giá vé trẻ sơ sinh: ${dataTour.babyPrice} ₫ |   Số chỗ trẻ sơ sinh: ${dataBookTour.babySlot ? dataBookTour.babySlot : 0}</div>
+                  <div style="text-align: right;">Tổng tiền: ${dataBill.totalCost}₫</div>
                   <div></div>
                   <div style="text-align: center;">Cảm ơn quý khách đã đặt niềm tin đến dịch vụ của LEVART WORLD .</div>
                   <div style="text-align: center;">LEVART WORLD rất hân hạnh được phục vụ quý khách</div>
@@ -105,10 +105,10 @@ let handleSendGmailBookTourByMoney = (data) => {
                   
                   <div >Ngày đi: ${dataTour.dateGo}    | Ngày về: ${dataTour.dateBack}</div>
                   <div >Nơi khởi hành: ${dataTour.placeGo}    | Nơi đến: ${dataTour.placeDest}</div>
-                  <div >Giá vé người lớn: ${dataTour.adultPrice} |    Số chỗ người lớn: ${dataBookTour.adultSlot}</div>
-                  <div >Giá vé trẻ em: ${dataTour.childPrice}  |   Số chỗ trẻ em: ${dataBookTour.childrenSlot ? dataBookTour.childrenSlot : 0}</div>
-                  <div >Giá vé trẻ sơ sinh: ${dataTour.babyPrice}   |  Số chỗ trẻ sơ sinh: ${dataBookTour.babySlot ? dataBookTour.babySlot : 0}</div>
-                  <div style="text-align: right;">Tổng tiền: ${dataTour.adultPrice * dataBookTour.adultSlot + dataTour.childPrice * dataBookTour.childrenSlot + dataBookTour.babySlot * dataTour.babyPrice}</div>
+                  <div >Giá vé người lớn: ${dataTour.adultPrice} ₫|    Số chỗ người lớn: ${dataBookTour.adultSlot}</div>
+                  <div >Giá vé trẻ em: ${dataTour.childPrice} ₫ |   Số chỗ trẻ em: ${dataBookTour.childrenSlot ? dataBookTour.childrenSlot : 0}</div>
+                  <div >Giá vé trẻ sơ sinh: ${dataTour.babyPrice}  ₫ |  Số chỗ trẻ sơ sinh: ${dataBookTour.babySlot ? dataBookTour.babySlot : 0}</div>
+                  <div style="text-align: right;">Tổng tiền: ${dataTour.adultPrice * dataBookTour.adultSlot + dataTour.childPrice * dataBookTour.childrenSlot + dataBookTour.babySlot * dataTour.babyPrice}₫</div>
                   <div></div>
                   <div style="text-align: center;">Cảm ơn quý khách đã đặt niềm tin đến dịch vụ của LEVART WORLD .</div>
                   <div style="text-align: center;">LEVART WORLD rất hân hạnh được phục vụ quý khách</div>

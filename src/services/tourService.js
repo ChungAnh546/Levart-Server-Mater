@@ -228,6 +228,12 @@ let getTourByNameAndPrice = (name, price) => {
                     }
                 }
 
+            } else {
+                tour = await db.Tour.findAll({
+                    attributes: {
+                        exclude: ['image']
+                    }
+                })
             }
 
             resolve({
