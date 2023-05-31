@@ -1,39 +1,35 @@
 import db from "../models/index";
+import moment from "moment";
+let totalBillOfDate = async (date) => {
+    let dataBill = await db.Bill.findAll();
+    let totalBill = 0;
+    for (let index = 0; index < dataBill.length; index++) {
+        const element = dataBill[index];
 
+        const dateBill = moment(element.createdAt, "DD/MM/YYYY");
+        console.log(date + '_' + dateBill);
+        if (dateBill.isSame(date)) {
+            totalBill = totalBill + element.totalCost;
+        }
+    }
+    return totalBill;
+}
 let getStatistics = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let billOld = await db.Bill.findOne({
-                where: {
-                    bookTourId: data.bookTourId,
-                    customerId: data.customerId,
+            let date = data.dateArray;
+            let arrData = [];
+            if (date) {
+                for (let index = 0; index < date.length; index++) {
+                    const element = date[index];
+                    arrData.push(await totalBillOfDate(element))
                 }
-            })
-            if (!billOld) {
-                await db.Bill.create({
-                    bookTourId: data.bookTourId,
-                    customerId: data.customerId,
-                    creatorId: data.creatorId,
-                    totalCost: data.totalCost,
-                    bookTourDate: data.bookTourDate,
-                    promotionCode: data.promotionCode,
-                    status: data.status,
-                }).then((dataBill) => {
-                    resolve({
-                        code: 201,
-                        errCode: 0,
-                        errMessage: '',
-                        message: 'OK',
-                        bill: dataBill
-                    })
-                })
-
             }
             resolve({
-                code: 401,
+                code: 200,
                 errCode: 0,
                 errMessage: '',
-                message: 'fail',
+                arrData: arrData
             })
 
         } catch (error) {

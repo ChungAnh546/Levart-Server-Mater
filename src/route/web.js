@@ -136,7 +136,7 @@ let initWebRoutes = (app) => {
     //APi payment stripe visa
     router.post('/create_payment_stripe', stripeController.stripe_Payment);
     //Api thông kê
-    router.post('/statistics', stripeController.stripe_Payment);
+    router.post('/statistics', statistics.handleStatistics);
     return app.use("/", router);
 }
 
