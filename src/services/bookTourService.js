@@ -3,6 +3,7 @@ import billService from "./billService";
 import sendMailService from "./sendMailService";
 import tourService from "../services/tourService";
 import userService from "../services/userService";
+import { x2 } from "sha256";
 const { set, get, setnx, incrby, exists } = require('../config/config.redis');
 let checkReservation = (tour, bookTour) => {
     let numberAdult = tour.numPersonA;
@@ -459,11 +460,23 @@ let getBookTourByTourId = (tourId) => {
 let getBookTourByCustomerId = (customerId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let bookTour = '';
+            let bookTour = [];
             if (customerId && customerId !== '') {
                 bookTour = await db.BookTour.findAll({
                     where: { customerId: customerId }
                 })
+                for (let index = 0; index < bookTour.length; index++) {
+                    const element = bookTour[index];
+
+                    bookTour[index].dataTourApi = await db.Tour.findOne({
+                        where: {
+                            id: element.tourId
+                        },
+                        attributes: {
+                            exclude: ['image']
+                        }
+                    })
+                }
             }
 
 
@@ -484,7 +497,7 @@ let getBookTourByCustomerId = (customerId) => {
             }
 
         } catch (error) {
-
+            console.log(error);
             resolve({
                 code: 400,
                 errCode: 1,

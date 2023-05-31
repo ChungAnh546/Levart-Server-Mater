@@ -18,6 +18,8 @@ import arrayImageController from "../controllers/arrayImageController.js";
 import favoriteTourController from "../controllers/favoriteTourController.js";
 import vnPayController from "../controllers/vnPayController.js";
 import stripeController from "../controllers/stripeController.js";
+
+import statistics from "../controllers/statisticsController.js";
 import sendMailController from "../controllers/sendMailController.js";
 //import { verifyToken } from "../middleware/auth";
 
@@ -133,6 +135,8 @@ let initWebRoutes = (app) => {
     router.post('/create_payment_url', vnPayController.vnPay_Payment);
     //APi payment stripe visa
     router.post('/create_payment_stripe', stripeController.stripe_Payment);
+    //Api thông kê
+    router.post('/statistics', stripeController.stripe_Payment);
     return app.use("/", router);
 }
 
