@@ -471,10 +471,11 @@ let getBookTourByCustomerId = (customerId) => {
                     bookTour[index].dataTourApi = await db.Tour.findOne({
                         where: {
                             id: element.tourId
-                        },
-                        attributes: {
-                            exclude: ['image']
                         }
+                        // ,
+                        // attributes: {
+                        //     exclude: ['image']
+                        // }
                     })
                 }
             }

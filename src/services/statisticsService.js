@@ -1,6 +1,6 @@
 import db from "../models/index";
 
-let create = (data) => {
+let getStatistics = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             let billOld = await db.Bill.findOne({
@@ -40,5 +40,10 @@ let create = (data) => {
             reject(error);
         }
     })
+
+}
+module.exports = {
+    getStatistics: getStatistics
+
 
 }
