@@ -1,4 +1,4 @@
-#TrinhAnhChung_19494291_KLTN
+# TrinhAnhChung_19494291_KLTN
 ### Information:
 - Name: Trịnh Anh Chung
 - Mssv: 19494291
@@ -41,8 +41,7 @@ Request: Develop a website travel using Node js & React js.
 >![image](https://github.com/ChungAnh546/Levart-Server-Mater/assets/92380932/54b54a5d-bcd5-4968-b746-037329869ae2)
 
 ## The tools that have been used
-- IDE: IntelliJ
-- Framework: Spring Boot
-- Web server: Tomcat
+- IDE: Visual Studio Code
+- Framework: Node js & React js
 - Database server: MySQL
 - Code storage: GitHub
